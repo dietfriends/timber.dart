@@ -38,7 +38,7 @@ jobs:
           flutter pub get
           flutter pub global activate remove_from_coverage
       - name: Run tests
-        working-directory: package/${{ matrix.package }}
+        working-directory: ${{ matrix.package }}
         run: |
           flutter test --coverage test
           flutter pub global run remove_from_coverage -f coverage/lcov.info -r '.freezed.dart$'
@@ -48,4 +48,4 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: ${{ matrix.package }}
-          file: ./package/${{ matrix.package }}/coverage/lcov.info
+          file: ./${{ matrix.package }}/coverage/lcov.info
