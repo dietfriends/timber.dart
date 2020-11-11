@@ -1,11 +1,11 @@
 import 'dart:developer' as developer;
 
 import 'package:logging/logging.dart' as $logging;
-import 'package:timber/src/log_tree.dart';
+import 'log_tree.dart';
 
 import 'tree.dart';
 
-class AppLogger extends Tree with LogTree {
+class DeveloperTree extends Tree with LogTree {
   @override
   void performLog($logging.LogRecord record) {
     developer.log(record.message,
