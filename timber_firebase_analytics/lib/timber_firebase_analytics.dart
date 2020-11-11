@@ -6,20 +6,20 @@ import 'package:timber/timber.dart';
 import 'package:time_machine/time_machine.dart' show LocalDate, LocalDateTime;
 
 /// A Calculator.
-class FirebaseAnalyticsTree with AnalyticsTree, UserAnalyticsTree {
+class FirebaseAnalyticsTree extends Tree with AnalyticsTree, UserAnalyticsTree {
   final FirebaseAnalytics _firebaseAnalytics;
 
   FirebaseAnalyticsTree(this._firebaseAnalytics)
       : assert(_firebaseAnalytics != null);
   @override
-  List<Type> supportedTypes = [
+  Set<Type> supportedTypes = {
     String,
     num,
     bool,
     DateTime,
     LocalDateTime,
     LocalDate
-  ];
+  };
 
   @override
   Future<void> setCurrentScreen(
@@ -109,4 +109,22 @@ class FirebaseAnalyticsTree with AnalyticsTree, UserAnalyticsTree {
     return _firebaseAnalytics.logEvent(
         name: eventName, parameters: eventParams);
   }
+
+  @override
+  Future<void> flush() {}
+
+  @override
+  Future<void> increment(Map<String, num> properties) {}
+
+  @override
+  Future<void> setOnce(Map<String, dynamic> properties) {}
+
+  @override
+  Future<void> timingEvent(String name) {}
+
+  @override
+  Future<void> union(Map<String, List> properties) {}
+
+  @override
+  void dispose() {}
 }

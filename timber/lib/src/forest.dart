@@ -14,28 +14,36 @@ import 'tree.dart';
 
 final _forestLogger = Logger('Forest');
 
-class Forest extends Tree with LogTree, CrashReportTree, AnalyticsTree {
+class Forest extends Tree
+    with LogTree, CrashReportTree, AnalyticsTree, UserAnalyticsTree {
   final _lock = Lock();
   final _memo = AsyncMemoizer();
+  final FlutterExceptionHandler _exceptionHandler;
+
+  Forest([this._exceptionHandler]);
+
   StreamSubscription<LogRecord> _subscription;
 
   Future<void> init() {
     return _memo.runOnce(() {
       // This captures errors reported by the Flutter framework.
-      FlutterError.onError = (FlutterErrorDetails details) {
-        if (isInDebugMode) {
-          // In development mode simply print to console.
-          FlutterError.dumpErrorToConsole(details);
-        } else {
-          // In production mode report to the application zone to report to
-          // Forest.
-          performReportFlutterError(details);
-        }
-      };
+      FlutterError.onError = _exceptionHandler ?? onFlutterError;
       _subscription = Logger.root.onRecord.listen((record) {
         performLog(record);
       });
     });
+  }
+
+  // Default Error Handler
+  void onFlutterError(FlutterErrorDetails details) {
+    if (isInDebugMode) {
+      // In development mode simply print to console.
+      FlutterError.dumpErrorToConsole(details);
+    } else {
+      // In production mode report to the application zone to report to
+      // Forest.
+      performReportFlutterError(details);
+    }
   }
 
   @override
@@ -101,6 +109,9 @@ class Forest extends Tree with LogTree, CrashReportTree, AnalyticsTree {
   Iterable<AnalyticsTree> get _analyticsTrees =>
       _trees.whereType<AnalyticsTree>();
 
+  Iterable<UserAnalyticsTree> get _userAnalyticsTrees =>
+      _trees.whereType<UserAnalyticsTree>();
+
   /// Add a new logging tree.
   void plant(Tree tree) {
     checkArgument(tree != this);
@@ -135,7 +146,7 @@ class Forest extends Tree with LogTree, CrashReportTree, AnalyticsTree {
 
   /// Override the level for this particular [Logger] and its children.
   set level(Level value) {
-    Logger.root.level = level;
+    Logger.root.level = value;
   }
 
   Level get level => Logger.root.level;
@@ -158,13 +169,127 @@ class Forest extends Tree with LogTree, CrashReportTree, AnalyticsTree {
   }
 
   @override
-  List<Type> get supportedTypes => [];
+  Set<Type> get supportedTypes {
+    var set = <Type>{};
+    _analyticsTrees.forEach((tree) {
+      set.addAll(tree.supportedTypes);
+    });
+    return set;
+  }
+
+  @override
+  bool isSupportedType(value) {
+    return _analyticsTrees.any((element) => element.isSupportedType(value));
+  }
 
   @override
   Future<void> performLogEvent(
       {@required String name, Map<String, dynamic> parameters}) {
     _analyticsTrees.where((tree) => isSupportedEventName(name)).forEach((tree) {
       tree.performLogEvent(name: name, parameters: parameters);
+    });
+  }
+
+  @override
+  Future<void> setUserProperty(String name, value) async {
+    _userAnalyticsTrees.forEach((tree) {
+      tree.setUserProperty(name, value);
+    });
+  }
+
+  /// userId 설정
+  @override
+  Future<void> setUserId(String id) async {
+    _userAnalyticsTrees.forEach((tree) {
+      tree.setUserId(id);
+    });
+  }
+
+  /// email 설정
+  @override
+  Future<void> setEmail(String email) async {
+    _userAnalyticsTrees.forEach((tree) {
+      tree.setEmail(email);
+    });
+  }
+
+  /// 전화번호 설정
+  @override
+  Future<void> setPhone(String phone) async {
+    _userAnalyticsTrees.forEach((tree) {
+      tree.setPhone(phone);
+    });
+  }
+
+  /// uid 설정
+  @override
+  Future<void> setUid(String uid) async {
+    _userAnalyticsTrees.forEach((tree) {
+      tree.setUid(uid);
+    });
+  }
+
+  @override
+  Future<void> union(Map<String, List<dynamic>> properties) async {
+    _userAnalyticsTrees.forEach((tree) {
+      tree.union(properties);
+    });
+  }
+
+  @override
+  Future<void> increment(Map<String, num> properties) async {
+    _userAnalyticsTrees.forEach((tree) {
+      tree.increment(properties);
+    });
+  }
+
+  @override
+  Future<void> setOnce(Map<String, dynamic> properties) async {
+    _userAnalyticsTrees.forEach((tree) {
+      tree.setOnce(properties);
+    });
+  }
+
+  @override
+  Future<void> setUserName(value) async {
+    _userAnalyticsTrees.forEach((tree) {
+      tree.setUserName(value);
+    });
+  }
+
+  @override
+  Future<void> reset() async {
+    _userAnalyticsTrees.forEach((tree) {
+      tree.reset();
+    });
+    _analyticsTrees.forEach((tree) {
+      tree.reset();
+    });
+  }
+
+  @override
+  Future<void> flush() async {
+    _userAnalyticsTrees.forEach((tree) {
+      tree.flush();
+    });
+    _analyticsTrees.forEach((tree) {
+      tree.flush();
+    });
+  }
+
+  @override
+  Future<void> setCurrentScreen(
+      {String screenName, String screenClassOverride = 'Flutter'}) async {
+    _analyticsTrees.forEach((tree) {
+      tree.setCurrentScreen(
+          screenName: screenName, screenClassOverride: screenClassOverride);
+    });
+  }
+
+  @override
+  Future<void> timingEvent(String name) async {
+    _analyticsTrees.forEach((tree) {
+      tree.timingEvent(name);
     });
   }
 }

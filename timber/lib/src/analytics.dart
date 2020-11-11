@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 import 'tree.dart';
 
 abstract class AnalyticsTree {
-  List<Type> get supportedTypes;
+  Set<Type> get supportedTypes;
 
   @protected
   bool isSupportedType(value) {
@@ -16,15 +16,14 @@ abstract class AnalyticsTree {
   Future<void> performLogEvent(
       {@required String name, Map<String, dynamic> parameters});
 
-  Future<void> timingEvent(String name) async {}
+  Future<void> timingEvent(String name);
 
   Future<void> setCurrentScreen(
-      {@required String screenName,
-      String screenClassOverride = 'Flutter'}) async {}
+      {@required String screenName, String screenClassOverride = 'Flutter'});
 
-  Future<void> reset() async {}
+  Future<void> reset();
 
-  Future<void> flush() async {}
+  Future<void> flush();
 }
 
 final _alphaNumeric = RegExp(r'^[a-zA-Z0-9_]*$');
@@ -66,19 +65,19 @@ abstract class UserAnalyticsTree {
     return setUserProperty(uidProperty, uid);
   }
 
-  Future<void> union(Map<String, List<dynamic>> properties) async {}
+  Future<void> union(Map<String, List<dynamic>> properties);
 
   Future<void> setUserProperty(String name, dynamic value);
 
-  Future<void> increment(Map<String, num> properties) async {}
+  Future<void> increment(Map<String, num> properties);
 
-  Future<void> setOnce(Map<String, dynamic> properties) async {}
+  Future<void> setOnce(Map<String, dynamic> properties);
 
   Future<void> setUserName(value) {
     return setUserProperty(nameProperty, value);
   }
 
-  Future<void> reset() async {}
+  Future<void> reset();
 
-  Future<void> flush() async {}
+  Future<void> flush();
 }

@@ -13,7 +13,7 @@ final _logger = Logger('MixpanelTree');
 
 class MixpanelTree extends Tree with AnalyticsTree, UserAnalyticsTree {
   @override
-  final List<Type> supportedTypes = [
+  final Set<Type> supportedTypes = {
     String,
     num,
     Uri,
@@ -21,7 +21,7 @@ class MixpanelTree extends Tree with AnalyticsTree, UserAnalyticsTree {
     List,
     LocalDate,
     LocalDateTime
-  ];
+  };
   @override
   String emailProperty = '\$email';
   @override
@@ -123,4 +123,13 @@ class MixpanelTree extends Tree with AnalyticsTree, UserAnalyticsTree {
   Future<void> reset() {
     return FlutterMixpanel.reset();
   }
+
+  @override
+  void dispose() async {
+    return FlutterMixpanel.flush();
+  }
+
+  @override
+  Future<void> setCurrentScreen(
+      {String screenName, String screenClassOverride = 'Flutter'}) {}
 }

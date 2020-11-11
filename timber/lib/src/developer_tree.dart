@@ -5,7 +5,7 @@ import 'log_tree.dart';
 
 import 'tree.dart';
 
-class DeveloperTree extends Tree with LogTree {
+class DeveloperTree with LogTree {
   @override
   void performLog($logging.LogRecord record) {
     developer.log(record.message,

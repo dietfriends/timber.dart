@@ -20,5 +20,5 @@ abstract class Tree {
     return inDebugMode;
   }
 
-  void dispose() {}
+  void dispose();
 }

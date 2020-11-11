@@ -61,4 +61,16 @@ class CrashlyticsTree with UserAnalyticsTree, LogTree, CrashReportTree {
   Future<void> reset() async {
     // return _crashlytics.setUserIdentifier('');
   }
+
+  @override
+  Future<void> flush() async {}
+
+  @override
+  Future<void> increment(Map<String, num> properties) async {}
+
+  @override
+  Future<void> setOnce(Map<String, dynamic> properties) async {}
+
+  @override
+  Future<void> union(Map<String, List> properties) async {}
 }
