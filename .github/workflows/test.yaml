@@ -19,13 +19,21 @@ jobs:
         package: [ "timber", "timber_crashlytics", "timber_firebase_analytics", "timber_mixpanel", "timber_sentry" ]
         version: [ "1.20.4", "1.22.3" ]
 
+
     steps:
       - uses: actions/checkout@v2
+      - name: Cache Flutter
+        id: cache-flutter
+        uses: actions/cache@v2
+        with:
+          path: /opt/hostedtoolcache/flutter
+          key: ${{ runner.os }}-flutter-install-cache-${{ matrix.version }}
+
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: ${{ matrix.version }}
       - name: Install dependencies
-        working-directory: package/${{ matrix.package }}
+        working-directory: ${{ matrix.package }}
         run: |
           flutter pub get
           flutter pub global activate remove_from_coverage
