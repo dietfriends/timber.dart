@@ -1,7 +1,8 @@
 name: timber
 description: A starting point for Dart libraries or applications.
-version: 0.1.0
-homepage: https://github.com/dietfriends/timber.dart
+version: 0.2.0+1
+homepage: https://github.com/dietfriends/timber.dart/tree/main/timber
+repository: https://github.com/dietfriends/timber.dart/
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -10,9 +11,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  logging: any
-  quiver:
-  synchronized:
+  logging: ^0.11.0
+  quiver: ^2.0.0
+  synchronized: ^2.0.0
+  meta: ^1.0.0
+  async: ^2.0.0
 
 dev_dependencies:
   pedantic: ^1.9.0

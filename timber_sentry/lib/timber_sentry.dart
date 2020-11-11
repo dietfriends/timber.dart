@@ -3,7 +3,7 @@ library timber_sentry;
 import 'dart:collection';
 
 import 'package:async/async.dart';
-import 'package:flutter/src/foundation/assertions.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart' as $logging;
 import 'package:package_info/package_info.dart';
 import 'package:sentry/sentry.dart';
@@ -17,8 +17,8 @@ class SentryTree extends Tree with CrashReportTree, LogTree {
   final _buffer = DoubleLinkedQueue<Breadcrumb>();
   final _logger = $logging.Logger('SentryTree');
   final _releaseMemo = AsyncMemoizer();
-
-  SentryTree(this._client);
+  final bufferSize;
+  SentryTree(this._client, {this.bufferSize = BUFFER_SIZE});
 
   @override
   void performLog($logging.LogRecord record) async {
@@ -38,28 +38,22 @@ class SentryTree extends Tree with CrashReportTree, LogTree {
       data: record.object,
       timestamp: record.time,
     ));
-    if (_buffer.length > BUFFER_SIZE) {
+    if (_buffer.length > bufferSize) {
       _buffer.removeFirst();
     }
 
     if (record.level < $logging.Level.WARNING) {
       // do not capture
+      _logger.fine('do not capture');
       return;
     }
 
     // Capture Event
-
-    var packageInfo = await PackageInfo.fromPlatform();
-
-    String packageName = packageInfo.packageName;
-    String version = packageInfo.version;
-    String buildNumber = packageInfo.buildNumber;
-
     try {
       final sentryId = await _client.captureEvent(SentryEvent(
         level: severityLevel,
         stackTrace: record.stackTrace,
-        release: '$version+$buildNumber',
+        release: await release,
         exception: record.error,
         message: message,
         logger: record.loggerName,
