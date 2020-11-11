@@ -1,0 +1,43 @@
+name: Test and coverage
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    paths:
+      - 'package/**'
+
+jobs:
+  title:
+    name: package test
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [ "timber", "timber_crashlytics", "timber_firebase_analytics", "timber_mixpanel", "timber_sentry" ]
+        version: [ "1.20.4", "1.22.3" ]
+
+    container:
+      image: cirrusci/flutter:${{ matrix.version }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        working-directory: package/${{ matrix.package }}
+        run: |
+          flutter pub get
+          flutter pub global activate remove_from_coverage
+      - name: Run tests
+        working-directory: package/${{ matrix.package }}
+        run: |
+          flutter test --coverage test
+          flutter pub global run remove_from_coverage -f coverage/lcov.info -r '.freezed.dart$'
+      - name: Upload coverage to codecov
+        uses: codecov/codecov-action@v1
+        if: ${{ matrix.version == '1.22.3' }}
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: ${{ matrix.package }}
+          file: ./package/${{ matrix.package }}/coverage/lcov.info
