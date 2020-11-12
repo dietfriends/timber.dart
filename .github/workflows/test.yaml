@@ -19,7 +19,6 @@ jobs:
         package: [ "timber", "timber_crashlytics", "timber_firebase_analytics", "timber_mixpanel", "timber_sentry" ]
         version: [ "1.20.4", "1.22.3" ]
 
-
     steps:
       - uses: actions/checkout@v2
       - name: Cache Flutter
@@ -46,11 +45,10 @@ jobs:
           flutter pub global run remove_from_coverage -f coverage/lcov.info -r '.freezed.dart$'
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@
-        working-directory: ${{ matrix.package }}
         with:
-          report_paths: 'TEST-report.xml'
+          report_paths: ${{ matrix.package }}/TEST-report.xml
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: Upload coverage to codecov
         uses: codecov/codecov-action@v1
         if: ${{ matrix.version == '1.22.3' }}
