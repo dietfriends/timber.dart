@@ -1,16 +1,4 @@
-import 'dart:async';
-
-import 'package:async/async.dart';
-import 'package:flutter/foundation.dart';
-import 'package:logging/logging.dart';
-import 'package:logging/logging.dart' show LogRecord;
-import 'package:quiver/check.dart';
-import 'package:synchronized/synchronized.dart';
-import 'package:timber/src/analytics.dart';
-
-import 'crashreport_tree.dart';
-import 'log_tree.dart';
-import 'tree.dart';
+part of 'timber.dart';
 
 final _forestLogger = Logger('Forest');
 
@@ -20,7 +8,10 @@ class Forest extends Tree
   final _memo = AsyncMemoizer();
   final FlutterExceptionHandler _exceptionHandler;
 
+  @visibleForTesting
   Forest([this._exceptionHandler]);
+
+  Forest._([this._exceptionHandler]);
 
   StreamSubscription<LogRecord> _subscription;
 

@@ -1,8 +1,3 @@
-import 'package:flutter/foundation.dart';
-import 'package:logging/logging.dart' as $logging;
-
-class Timber {}
-
 abstract class Tree {
   /// Whether the VM is running in debug mode.
   ///

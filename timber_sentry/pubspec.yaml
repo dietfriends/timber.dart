@@ -19,6 +19,9 @@ dependencies:
   pedantic: '>=1.0.0 <2.0.0'
   sentry: ^4.0.0-alpha.1
   package_info: '<1.0.0'
+  device_info: ^1.0.0
+  battery: ^1.0.7
+
   async: ^2.0.0
 dev_dependencies:
   flutter_test:
