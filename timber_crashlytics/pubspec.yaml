@@ -11,7 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  timber: ^0.1.0
+  timber:
+    path: ../timber
   firebase_crashlytics: ^0.2.0
 
 dev_dependencies:

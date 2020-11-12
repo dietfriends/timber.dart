@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/timber/timber.iml" filepath="$PROJECT_DIR$/timber/timber.iml" />
       <module fileurl="file://$PROJECT_DIR$/timber.dart.iml" filepath="$PROJECT_DIR$/timber.dart.iml" />
       <module fileurl="file://$PROJECT_DIR$/timber_crashlytics/timber_crashlytics.iml" filepath="$PROJECT_DIR$/timber_crashlytics/timber_crashlytics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/timber_example/timber_example.iml" filepath="$PROJECT_DIR$/timber_example/timber_example.iml" />
       <module fileurl="file://$PROJECT_DIR$/timber_firebase_analytics/timber_firebase_analytics.iml" filepath="$PROJECT_DIR$/timber_firebase_analytics/timber_firebase_analytics.iml" />
       <module fileurl="file://$PROJECT_DIR$/timber_mixpanel/timber_mixpanel.iml" filepath="$PROJECT_DIR$/timber_mixpanel/timber_mixpanel.iml" />
       <module fileurl="file://$PROJECT_DIR$/timber_sentry/timber_sentry.iml" filepath="$PROJECT_DIR$/timber_sentry/timber_sentry.iml" />

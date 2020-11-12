@@ -118,8 +118,10 @@ void main() {
       final tree = MockAnalyticsTree();
       devForest.plant(tree);
 
-      when(tree.supportedTypes).thenReturn({String, int});
-      expect(devForest.supportedTypes, containsAll({String, int}));
+      when(tree.supportedTypes).thenReturn({String, num});
+      expect(devForest.supportedTypes, containsAll({String, num}));
+
+      expect(devForest.isSupportedType(num), isTrue);
     });
   });
 

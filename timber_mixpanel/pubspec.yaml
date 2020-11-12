@@ -1,7 +1,7 @@
 name: timber_mixpanel
 description: A new Flutter project.
 
-version: 1.0.0+1
+version: 0.1.0
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -14,8 +14,8 @@ dependencies:
   quiver: '>=2.0.0 <3.0.0'
   pedantic: '>=1.0.0 <2.0.0'
   logging: any
-  timber:
-    path: ../timber
+  timber: ^0.3.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

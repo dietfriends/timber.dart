@@ -6,7 +6,10 @@ abstract class AnalyticsTree {
   Set<Type> get supportedTypes;
 
   @protected
-  bool isSupportedType(value) {
+  bool isSupportedType(Type value) {
+    return supportedTypes.any((type) {
+      return type == value;
+    });
     return supportedTypes.contains(value);
   }
 

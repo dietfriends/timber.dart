@@ -320,10 +320,10 @@ packages:
   timber:
     dependency: "direct main"
     description:
-      path: "../timber"
-      relative: true
-    source: path
-    version: "0.2.0+1"
+      name: timber
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.0"
   time_machine:
     dependency: "direct main"
     description:

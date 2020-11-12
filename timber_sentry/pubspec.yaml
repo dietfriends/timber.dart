@@ -1,8 +1,9 @@
 name: timber_sentry
 description: A new Flutter project.
 version: 0.0.1
-author:
-homepage:
+author: Minsu Lee
+homepage: https://github.com/dietfriends/timber.dart/tree/main/timber_sentry
+repository: https://github.com/dietfriends/timber.dart/
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -11,9 +12,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  timber:
-    path:
-      ../timber
+  timber: ^0.3.0
   time_machine: '<1.0.0'
   quiver: '>=2.0.0 <3.0.0'
   pedantic: '>=1.0.0 <2.0.0'
@@ -27,3 +26,5 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mockito: any
+  flutter_driver:
+    sdk: flutter

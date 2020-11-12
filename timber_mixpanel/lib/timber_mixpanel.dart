@@ -20,7 +20,11 @@ class MixpanelTree extends Tree with AnalyticsTree, UserAnalyticsTree {
     DateTime,
     List,
     LocalDate,
-    LocalDateTime
+    LocalDateTime,
+    bool,
+    int,
+    double,
+    Map
   };
   @override
   String emailProperty = '\$email';
@@ -76,7 +80,7 @@ class MixpanelTree extends Tree with AnalyticsTree, UserAnalyticsTree {
     var mixpanel = Map<String, dynamic>.of(input);
 
     input.forEach((key, value) {
-      if (isSupportedType(value)) {
+      if (isSupportedType(value.runtimeType)) {
         if (value is DateTime) {
           // mixpanel[key] = value.toUtc();
         }

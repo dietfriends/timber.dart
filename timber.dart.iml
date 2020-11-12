@@ -9,6 +9,9 @@
       <excludeFolder url="file://$MODULE_DIR$/timber_crashlytics/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/timber_crashlytics/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/timber_crashlytics/build" />
+      <excludeFolder url="file://$MODULE_DIR$/timber_example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/timber_example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/timber_example/build" />
       <excludeFolder url="file://$MODULE_DIR$/timber_firebase_analytics/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/timber_firebase_analytics/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/timber_firebase_analytics/build" />

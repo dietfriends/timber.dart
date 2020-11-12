@@ -6,7 +6,8 @@ import 'package:logging/logging.dart' as $logging;
 import 'package:timber/timber.dart';
 
 /// A Calculator.
-class CrashlyticsTree with UserAnalyticsTree, LogTree, CrashReportTree {
+class CrashlyticsTree extends Tree
+    with UserAnalyticsTree, LogTree, CrashReportTree {
   final FirebaseCrashlytics _crashlytics;
 
   CrashlyticsTree([FirebaseCrashlytics firebaseCrashlytics])
@@ -73,4 +74,7 @@ class CrashlyticsTree with UserAnalyticsTree, LogTree, CrashReportTree {
 
   @override
   Future<void> union(Map<String, List> properties) async {}
+
+  @override
+  void dispose() {}
 }
