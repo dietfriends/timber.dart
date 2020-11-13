@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:timber_sentry/src/provider.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   group('DeviceInfContextsProvider', () {
     test('iosProvide', () async {
       var provider = DeviceInfContextsProvider();
