@@ -52,7 +52,7 @@ void main() {
 
   group('isSupportedType', () {
     test('should throw assertion error', () {
-      expect(() => tree.isSupportedType(null), throwsAssertionError);
+      expect(tree.isSupportedType(null), false);
     });
 
     test('should true', () {
