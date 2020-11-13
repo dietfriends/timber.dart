@@ -1,6 +1,6 @@
 name: timber_sentry
 description: Timber Tree implementation for Sentry.
-version: 0.0.1
+version: 0.0.2+1
 homepage: https://github.com/dietfriends/timber.dart/tree/main/timber_sentry
 repository: https://github.com/dietfriends/timber.dart/
 

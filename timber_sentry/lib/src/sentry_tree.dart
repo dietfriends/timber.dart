@@ -163,11 +163,17 @@ extension LevelX on $logging.Level {
 
 extension LogRecordX on $logging.LogRecord {
   Breadcrumb get toBreadcrumb {
+    var data;
+    if (object is Map<String, dynamic>) {
+      data = object;
+    }
+    assert(data == null || data is Map<String, dynamic>);
+
     return Breadcrumb(
       level: level.toSentryLevel,
       message: message,
       type: loggerName,
-      data: object,
+      data: data,
       timestamp: time,
     );
   }

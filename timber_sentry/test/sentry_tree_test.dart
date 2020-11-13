@@ -148,7 +148,20 @@ void main() {
 
   group('LogRecordExtension', () {
     test('toBreadcrumb', () {
-      final record = LogRecord(Level.INFO, 'message', 'logger', 'object');
+      final stack = StackTrace.current;
+      final record =
+          LogRecord(Level.INFO, 'message', 'logger', 'object', stack);
+      final breadcrumb = record.toBreadcrumb;
+
+      expect(breadcrumb.level, SentryLevel.info);
+      expect(breadcrumb.message, record.message);
+      expect(breadcrumb.type, record.loggerName);
+      expect(breadcrumb.data, record.object);
+      expect(breadcrumb.timestamp, record.time);
+    });
+
+    test('data is not map', () {
+      final record = LogRecord(Level.INFO, 'message', 'logger', 'object', null);
       final breadcrumb = record.toBreadcrumb;
 
       expect(breadcrumb.level, SentryLevel.info);
