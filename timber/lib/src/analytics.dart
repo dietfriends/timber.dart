@@ -7,6 +7,11 @@ abstract class AnalyticsTree {
 
   @protected
   bool isSupportedType(Type value) {
+    assert(value is Type);
+    // TODO(amond): if value is not type, false?
+    //if (value is! Type) {
+    //  return false;
+    //}
     return supportedTypes.any((type) {
       return type == value;
     });

@@ -18,7 +18,9 @@ class FirebaseAnalyticsTree extends Tree with AnalyticsTree, UserAnalyticsTree {
     bool,
     DateTime,
     LocalDateTime,
-    LocalDate
+    LocalDate,
+    int,
+    double
   };
 
   @override
@@ -45,7 +47,7 @@ class FirebaseAnalyticsTree extends Tree with AnalyticsTree, UserAnalyticsTree {
     input.forEach((key, value) {
       // only alpha numeric key is supported in Firebase Analytics
       if (key.isAlphaNumeric) {
-        if (isSupportedType(value)) {
+        if (isSupportedType(value.runtimeType)) {
           if (value is DateTime) {
             properties[key] = value
                 .toUtc()
