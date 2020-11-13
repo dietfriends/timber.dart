@@ -3,13 +3,15 @@ library timber_sentry;
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart' as $logging;
 import 'package:sentry/sentry.dart';
+
 // ignore: implementation_imports
 import 'package:sentry/src/hub.dart';
 import 'package:timber/timber.dart';
 
 import 'provider.dart';
 
-final _logger = $logging.Logger('SentryTree');
+const _LOGGER_NAME = 'SentryTree';
+final _logger = $logging.Logger(_LOGGER_NAME);
 
 class SentryTree extends Tree with CrashReportTree, LogTree {
   final ReleaseProvider releaseProvider;
@@ -139,6 +141,9 @@ class SentryTree extends Tree with CrashReportTree, LogTree {
   void dispose() {
     return hub?.close();
   }
+
+  @override
+  String get loggerName => _LOGGER_NAME;
 }
 
 extension LevelX on $logging.Level {

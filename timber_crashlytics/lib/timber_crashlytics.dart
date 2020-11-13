@@ -78,4 +78,7 @@ class CrashlyticsTree extends Tree
 
   @override
   void dispose() {}
+
+  @override
+  String get loggerName => 'CrashlyticsTree';
 }

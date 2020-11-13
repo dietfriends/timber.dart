@@ -1,3 +1,7 @@
+## [0.0.3]
+
+- fix: infinite loop perform log
+
 ## [0.0.2+1]
 
 - testing: fix test

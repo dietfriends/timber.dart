@@ -138,6 +138,27 @@ void main() {
 
       verify(tree.performLog(record)).called(1);
     });
+
+    test('recursivelog', () async {
+      final tree = MockLogTree();
+      final otherTree = MockLogTree();
+
+      await Timber.instance.init();
+      Timber.instance.plant(tree);
+      Timber.instance.plant(otherTree);
+
+      final record = LogRecord(Level.INFO, 'test', 'MockLogTree');
+      when(tree.loggerName).thenReturn('MockLogTree');
+      when(otherTree.loggerName).thenReturn('otherTree');
+
+      when(tree.performLog(record)).thenReturn(null);
+      when(otherTree.performLog(record)).thenReturn(null);
+
+      Timber.instance.performLog(record);
+
+      verifyNever(tree.performLog(record));
+      verify(otherTree.performLog(record)).called(1);
+    });
   });
 
   group('AnalyticsTree', () {

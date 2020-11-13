@@ -1,6 +1,7 @@
 part of 'timber.dart';
 
-final _forestLogger = Logger('Forest');
+const _LOGGER_NAME = 'Forest';
+final _forestLogger = Logger(_LOGGER_NAME);
 
 class Forest extends Tree
     with LogTree, CrashReportTree, AnalyticsTree, UserAnalyticsTree {
@@ -40,7 +41,10 @@ class Forest extends Tree
   @override
   void performLog(LogRecord record) {
     _logTrees.forEach((tree) {
-      tree.performLog(record);
+      if (record.loggerName != tree.loggerName) {
+        // exclude recursive logging
+        tree.performLog(record);
+      }
     });
   }
 
@@ -283,4 +287,7 @@ class Forest extends Tree
       tree.timingEvent(name);
     });
   }
+
+  @override
+  String get loggerName => _LOGGER_NAME;
 }

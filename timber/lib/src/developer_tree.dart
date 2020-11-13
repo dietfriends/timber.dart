@@ -1,8 +1,8 @@
 import 'dart:developer' as developer;
 
 import 'package:logging/logging.dart' as $logging;
-import 'log_tree.dart';
 
+import 'log_tree.dart';
 import 'tree.dart';
 
 class DeveloperTree extends Tree with LogTree {
@@ -20,4 +20,7 @@ class DeveloperTree extends Tree with LogTree {
 
   @override
   void dispose() {}
+
+  @override
+  String get loggerName => 'DeveloperTree';
 }
