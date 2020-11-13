@@ -232,7 +232,7 @@ packages:
     source: hosted
     version: "2.2.2"
   logging:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: logging
       url: "https://pub.dartlang.org"

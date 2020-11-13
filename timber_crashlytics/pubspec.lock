@@ -107,7 +107,7 @@ packages:
     source: hosted
     version: "0.5.2"
   firebase_core_platform_interface:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: firebase_core_platform_interface
       url: "https://pub.dartlang.org"
@@ -128,7 +128,7 @@ packages:
     source: hosted
     version: "0.2.3"
   firebase_crashlytics_platform_interface:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: firebase_crashlytics_platform_interface
       url: "https://pub.dartlang.org"
@@ -192,7 +192,7 @@ packages:
     source: hosted
     version: "0.6.3-nullsafety.2"
   logging:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: logging
       url: "https://pub.dartlang.org"
@@ -344,7 +344,7 @@ packages:
     source: hosted
     version: "1.8.0-nullsafety.2"
   stack_trace:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: stack_trace
       url: "https://pub.dartlang.org"
@@ -402,9 +402,9 @@ packages:
   timber:
     dependency: "direct main"
     description:
-      path: "../timber"
-      relative: true
-    source: path
+      name: timber
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.3.0"
   typed_data:
     dependency: transitive
