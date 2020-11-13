@@ -1,22 +1,38 @@
-A library for Dart developers.
+# Timber
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+[![codecov](https://codecov.io/gh/dietfriends/timber.dart/branch/main/graph/badge.svg)](https://codecov.io/gh/dietfriends/timber.dart)
+[![CodeFactor](https://www.codefactor.io/repository/github/dietfriends/timber.dart/badge)](https://www.codefactor.io/repository/github/dietfriends/timber.dart)
+## Packages
 
-## Usage
+- timber
+- timber_sentry
+- timber_mixpanel
+- timber_crashlytics
+- timber_firebase_analytics
 
-A simple usage example:
+### timber
+[![pub](https://badgen.net/pub/v/timber)](https://pub.dev/packages/timber)
+[![codecov](https://codecov.io/gh/dietfriends/timber.dart/branch/main/graph/badge.svg?flag=timber)](https://codecov.io/gh/dietfriends/timber.dart)
 
-```dart
-import 'package:timber/timber.dart';
+### timber_sentry
 
-main() {
-  var awesome = new Awesome();
-}
-```
+[![pub](https://badgen.net/pub/v/timber_sentry)](https://pub.dev/packages/timber_sentry)
+[![codecov](https://codecov.io/gh/dietfriends/timber.dart/branch/main/graph/badge.svg?flag=timber_sentry)](https://codecov.io/gh/dietfriends/timber.dart)
 
-## Features and bugs
 
-Please file feature requests and bugs at the [issue tracker][tracker].
+### timber_mixpanel
 
-[tracker]: http://example.com/issues/replaceme
+[![pub](https://badgen.net/pub/v/timber_mixpanel)](https://pub.dev/packages/timber_mixpanel)
+[![codecov](https://codecov.io/gh/dietfriends/timber.dart/branch/main/graph/badge.svg?flag=timber_mixpanel)](https://codecov.io/gh/dietfriends/timber.dart)
+
+
+### timber_crashlytics
+
+[![pub](https://badgen.net/pub/v/timber_crashlytics)](https://pub.dev/packages/timber_crashlytics)
+[![codecov](https://codecov.io/gh/dietfriends/timber.dart/branch/main/graph/badge.svg?flag=timber_crashlytics)](https://codecov.io/gh/dietfriends/timber.dart)
+
+
+### timber_firebase_analytics
+
+[![pub](https://badgen.net/pub/v/timber_firebase_analytics)](https://pub.dev/packages/timber_firebase_analytics)
+[![codecov](https://codecov.io/gh/dietfriends/timber.dart/branch/main/graph/badge.svg?flag=timber_firebase_analytics)](https://codecov.io/gh/dietfriends/timber.dart)

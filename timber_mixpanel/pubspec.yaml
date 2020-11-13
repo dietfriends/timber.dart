@@ -1,7 +1,8 @@
 name: timber_mixpanel
-description: A new Flutter project.
-
-version: 0.1.0
+description: Timber Tree implementation for Mixpanel.
+version: 0.0.1
+homepage: https://github.com/dietfriends/timber.dart/tree/main/timber_mixpanel
+repository: https://github.com/dietfriends/timber.dart/
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -10,10 +11,10 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_mixpanel: ^0.2.0+3
-  time_machine: '<1.0.0'
+  time_machine: '>=0.9.0 <1.0.0'
   quiver: '>=2.0.0 <3.0.0'
   pedantic: '>=1.0.0 <2.0.0'
-  logging: any
+  logging: ^0.11.0
   timber: ^0.3.0
 
 dev_dependencies:
