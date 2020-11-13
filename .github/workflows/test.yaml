@@ -17,7 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         package: [ "timber", "timber_crashlytics", "timber_firebase_analytics", "timber_mixpanel", "timber_sentry" ]
-        version: [ "1.20.4", "1.22.3" ]
+        version: [ "1.22.3" ]
 
     steps:
       - uses: actions/checkout@v2
