@@ -55,6 +55,7 @@ class CrashlyticsTree extends Tree
 
   @override
   Future<void> setUid(String uid) {
+    assert(uid != null);
     return _crashlytics.setUserIdentifier(uid);
   }
 
