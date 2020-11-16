@@ -31,6 +31,10 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: ${{ matrix.version }}
+      - uses: stelynx/dart-full-coverage@v1.0.3
+        with:
+          package: ${{ matrix.package }}
+          path: ${{ matrix.package }}/lib
       - name: Install dependencies
         working-directory: ${{ matrix.package }}
         run: |
