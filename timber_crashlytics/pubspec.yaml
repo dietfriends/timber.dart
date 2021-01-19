@@ -1,6 +1,6 @@
 name: timber_crashlytics
 description: Timber Tree implementation for Firebase Crashlytics.
-version: 0.0.2
+version: 0.1.0
 homepage: https://github.com/dietfriends/timber.dart/tree/main/timber_crashlytics
 repository: https://github.com/dietfriends/timber.dart/
 
@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   timber: '^0.3.2'
-  firebase_crashlytics: ^0.2.0
+  firebase_crashlytics: ^0.4.0
   logging: ^0.11.0
 
 dev_dependencies:
