@@ -10,29 +10,9 @@ abstract class Provider<T> {
   Future<T> provide();
 }
 
-abstract class ReleaseProvider extends Provider<String> {}
-
-abstract class EnvironmentProvider extends Provider<String> {}
-
 abstract class UserProvider extends Provider<User> {}
 
 abstract class ContextsProvider extends Provider<Contexts> {}
-
-class PlatformReleaseProvider implements ReleaseProvider {
-  @override
-  Future<String> provide() async {
-    var packageInfo = await PackageInfo.fromPlatform();
-    return provideFromPackageInfo(packageInfo);
-  }
-
-  Future<String> provideFromPackageInfo(PackageInfo packageInfo) async {
-    checkNotNull(packageInfo);
-    final packageName = packageInfo.packageName;
-    final version = packageInfo.version;
-    final buildNumber = packageInfo.buildNumber;
-    return '$version+$buildNumber';
-  }
-}
 
 class DeviceInfContextsProvider implements ContextsProvider {
   final _deviceInfo = DeviceInfoPlugin();

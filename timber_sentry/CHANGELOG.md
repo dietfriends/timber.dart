@@ -1,3 +1,7 @@
+## [0.1.0]
+
+- feat: flutter integration
+
 ## [0.0.3]
 
 - fix: infinite loop perform log

@@ -6,6 +6,7 @@ import 'package:sentry/sentry.dart';
 
 // ignore: implementation_imports
 import 'package:sentry/src/hub.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:timber/timber.dart';
 
 import 'provider.dart';
@@ -13,9 +14,7 @@ import 'provider.dart';
 const _LOGGER_NAME = 'SentryTree';
 final _logger = $logging.Logger(_LOGGER_NAME);
 
-class SentryTree extends Tree with CrashReportTree, LogTree {
-  final ReleaseProvider releaseProvider;
-  final EnvironmentProvider environmentProvider;
+class SentryTree extends Tree with LogTree {
   final UserProvider userProvider;
   final ContextsProvider contextsProvider;
   final SentryLevel minEventLevel;
@@ -23,11 +22,9 @@ class SentryTree extends Tree with CrashReportTree, LogTree {
   final Hub hub;
 
   SentryTree(this.hub,
-      {SentryOptions sentryOptions,
+      {SentryFlutterOptions sentryOptions,
       this.userProvider,
       this.contextsProvider,
-      this.environmentProvider,
-      this.releaseProvider,
       this.minBreadcrumbLevel = SentryLevel.info,
       this.minEventLevel = SentryLevel.error}) {
     /*
@@ -71,7 +68,7 @@ class SentryTree extends Tree with CrashReportTree, LogTree {
     if (_isLoggable(sentryLevel, minEventLevel)) {
       final sentryId = await hub.captureEvent(SentryEvent(
         level: record.level.toSentryLevel,
-        stackTrace: record.stackTrace,
+        // stackTrace: record.stackTrace,
         exception: record.error,
         message: Message(record.message),
         logger: record.loggerName,
@@ -84,56 +81,6 @@ class SentryTree extends Tree with CrashReportTree, LogTree {
     // checks the breadcrumb level
     if (_isLoggable(sentryLevel, minBreadcrumbLevel)) {
       hub.addBreadcrumb(record.toBreadcrumb);
-    }
-  }
-
-  @override
-  void performReportError(dynamic error, dynamic stackTrace) async {
-    _logger.info('performReportError');
-    _logger.info('Reporting to Sentry.io... ');
-    // 프로덕션 모드에서는 exception과 stacktrace를 Sentry로 보냅니다.
-    await _captureError(error, stackTrace);
-  }
-
-  Future<SentryId> _captureError(dynamic error, dynamic stackTrace) async {
-    try {
-      // Capture Event
-      final eventId = await hub.captureEvent(SentryEvent(
-          stackTrace: stackTrace,
-          release: await releaseProvider?.provide(),
-          exception: error,
-          environment: await environmentProvider?.provide(),
-          user: await userProvider?.provide(),
-          contexts: await contextsProvider?.provide()));
-      _logger.info('Success! Event ID: $eventId');
-      return eventId;
-    } catch (e) {
-      _logger.info('Failed to report to Sentry.io: $e', e);
-      return null;
-    }
-  }
-
-  @override
-  void performReportFlutterError(FlutterErrorDetails errorDetails) async {
-    _logger.info('Reporting to Sentry.io...');
-    // 프로덕션 모드에서는 exception과 stacktrace를 Sentry로 보냅니다.
-    await _captureFlutterError(errorDetails);
-  }
-
-  Future<void> _captureFlutterError(FlutterErrorDetails errorDetails) async {
-    try {
-      final eventId = await hub.captureEvent(SentryEvent(
-          stackTrace: errorDetails.stack,
-          release: await releaseProvider?.provide(),
-          exception: errorDetails.exception,
-          message: Message(errorDetails.toString()),
-          environment: await environmentProvider?.provide(),
-          user: await userProvider?.provide(),
-          contexts: await contextsProvider?.provide()));
-
-      _logger.info('Success! Event ID: $eventId');
-    } catch (e) {
-      _logger.info('Failed to report to Sentry.io: $e', e);
     }
   }
 

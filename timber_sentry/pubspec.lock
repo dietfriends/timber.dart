@@ -191,6 +191,11 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_web_plugins:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   fuchsia_remote_debug_protocol:
     dependency: transitive
     description: flutter
@@ -344,12 +349,19 @@ packages:
     source: hosted
     version: "2.1.7"
   sentry:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: sentry
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0-alpha.1"
+    version: "4.0.1"
+  sentry_flutter:
+    dependency: "direct main"
+    description:
+      name: sentry_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.1"
   sky_engine:
     dependency: transitive
     description: flutter

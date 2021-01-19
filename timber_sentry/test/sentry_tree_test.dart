@@ -80,36 +80,6 @@ void main() {
     });
   });
 
-  group('performReportError', () {
-    test('test s', () async {
-      final sentryId = SentryId.newId();
-      when(hub.captureEvent(any)).thenAnswer((_) async => sentryId);
-      await tree.performReportError('test', StackTrace.empty);
-      verify(hub.captureEvent(any)).called(1);
-    });
-
-    test('captureEvent 시에 exception 발생', () async {
-      when(hub.captureEvent(any)).thenThrow(StateError('error'));
-      await tree.performReportError(StateError('test'), StackTrace.empty);
-      verify(hub.captureEvent(any)).called(1);
-    });
-  });
-
-  group('performReportFlutterError', () {
-    test('success', () async {
-      when(hub.captureEvent(any))
-          .thenAnswer((_) => Future.value(SentryId.newId()));
-      await tree.performReportFlutterError(FlutterErrorDetails());
-      verify(hub.captureEvent(any)).called(1);
-    });
-
-    test('captureEvent 시에 exception 발생', () async {
-      when(hub.captureEvent(any)).thenThrow(StateError('error'));
-      await tree.performReportFlutterError(FlutterErrorDetails());
-      verify(hub.captureEvent(any)).called(1);
-    });
-  });
-
   test('dispose', () async {
     when(hub.close()).thenReturn(null);
     tree.dispose();
@@ -169,21 +139,6 @@ void main() {
       expect(breadcrumb.type, record.loggerName);
       expect(breadcrumb.data, record.object);
       expect(breadcrumb.timestamp, record.time);
-    });
-  });
-
-  group('ReleaseProvider', () {
-    test('provide test', () async {
-      final provider = PlatformReleaseProvider();
-
-      final packageInfo = PackageInfo(
-          appName: 'dietfriends',
-          buildNumber: '1',
-          packageName: 'kr.dietfriends',
-          version: '1.0.0');
-      final release = await provider.provideFromPackageInfo(packageInfo);
-
-      expect(release, '1.0.0+1');
     });
   });
 }
