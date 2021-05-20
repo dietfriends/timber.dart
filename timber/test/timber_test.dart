@@ -2,32 +2,29 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logging/logging.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:timber/timber.dart';
-import 'package:mockito/mockito.dart';
 
 void main() {
-  Forest devForest;
-  Forest prodForest;
-  Forest mockForest;
-
-  setUp(() {
-    devForest = Forest();
-    prodForest = ProdForest();
-    mockForest = MockForest();
-  });
-
   group('Forest', () {
+    late Forest devForest;
+    late Forest prodForest;
+    late Forest mockForest;
+    setUp(() {
+      devForest = Forest();
+      prodForest = ProdForest();
+      mockForest = MockForest();
+    });
     test('init - dev', () {
       devForest.init();
-      FlutterError.onError(FlutterErrorDetails(exception: 'test'));
+      FlutterError.onError!(FlutterErrorDetails(exception: 'test'));
     });
 
     test('init - prod', () {
       prodForest.init();
-      FlutterError.onError(FlutterErrorDetails(exception: 'test'));
+      FlutterError.onError!(FlutterErrorDetails(exception: 'test'));
     });
 
     test('init - exceptionHandler, flutter 에서 에러 발생시 handler 가 불려야 함',
@@ -43,9 +40,9 @@ void main() {
           reason:
               'Init 에 handler 설정할 경우 FlutterError.onError 에 handler 가 할당 됨');
 
-      FlutterError.onError(FlutterErrorDetails());
+      FlutterError.onError!(FlutterErrorDetails(exception: Exception()));
       expect(callCount, 1, reason: '한번 불릴 경우');
-      FlutterError.onError(FlutterErrorDetails());
+      FlutterError.onError!(FlutterErrorDetails(exception: Exception()));
       expect(callCount, 2, reason: '두번 불릴 경우');
     });
 
@@ -55,7 +52,7 @@ void main() {
       devForest.plant(tree1);
       devForest.dispose();
 
-      verify(tree1.dispose()).called(1);
+      verify(() => tree1.dispose()).called(1);
       verifyNoMoreInteractions(tree1);
       expect(devForest.treeCount, 0);
       expect((await devForest.forest).length, 0);
@@ -118,25 +115,34 @@ void main() {
       final tree = MockAnalyticsTree();
       devForest.plant(tree);
 
-      when(tree.supportedTypes).thenReturn({String, num});
+      when(() => tree.supportedTypes).thenReturn(<Type>{String, num});
       expect(devForest.supportedTypes, containsAll({String, num}));
 
+      //TODO(amond): fix test
       expect(devForest.isSupportedType(num), isTrue);
     });
   });
 
   group('LogTree', () {
+    late Forest devForest;
+    late Forest prodForest;
+    late Forest mockForest;
+    setUp(() {
+      devForest = Forest();
+      prodForest = ProdForest();
+      mockForest = MockForest();
+    });
     test('performLog', () {
       final tree = MockLogTree();
       devForest.plant(tree);
 
       final record = LogRecord(Level.INFO, 'test', 'loggerName');
 
-      when(tree.performLog(record)).thenReturn(null);
+      when(() => tree.performLog(record)).thenReturn(null);
 
       devForest.performLog(record);
 
-      verify(tree.performLog(record)).called(1);
+      verify(() => tree.performLog(record)).called(1);
     });
 
     test('recursivelog', () async {
@@ -148,41 +154,51 @@ void main() {
       Timber.instance.plant(otherTree);
 
       final record = LogRecord(Level.INFO, 'test', 'MockLogTree');
-      when(tree.loggerName).thenReturn('MockLogTree');
-      when(otherTree.loggerName).thenReturn('otherTree');
+      when(() => tree.loggerName).thenReturn('MockLogTree');
+      when(() => otherTree.loggerName).thenReturn('otherTree');
 
-      when(tree.performLog(record)).thenReturn(null);
-      when(otherTree.performLog(record)).thenReturn(null);
+      when(() => tree.performLog(record)).thenReturn(null);
+      when(() => otherTree.performLog(record)).thenReturn(null);
 
       Timber.instance.performLog(record);
 
-      verifyNever(tree.performLog(record));
-      verify(otherTree.performLog(record)).called(1);
+      verifyNever(() => tree.performLog(record));
+      verify(() => otherTree.performLog(record)).called(1);
     });
   });
 
   group('AnalyticsTree', () {
+    late Forest devForest;
+    late Forest prodForest;
+    late Forest mockForest;
+    setUp(() {
+      devForest = Forest();
+      prodForest = ProdForest();
+      mockForest = MockForest();
+    });
     test('performLogEvent', () {
       final tree = MockAnalyticsTree();
       devForest.plant(tree);
 
       final eventName = 'testEvent';
 
-      when(tree.performLogEvent(name: eventName)).thenReturn(null);
+      when(() => tree.performLogEvent(name: eventName))
+          .thenAnswer((_) => Future.value());
 
       devForest.performLogEvent(name: eventName);
 
-      verify(tree.performLogEvent(name: eventName)).called(1);
+      verify(() => tree.performLogEvent(name: eventName)).called(1);
     });
 
     test('isSupportedType', () {
       final tree = MockAnalyticsTree();
       devForest.plant(tree);
-      when(tree.supportedTypes).thenReturn({String});
+      when(() => tree.supportedTypes).thenReturn({String});
+      //expect(tree.supportedTypes, {String});
 
-      devForest.isSupportedType(String);
+      expect(devForest.isSupportedType(String), isTrue);
 
-      verify(tree.supportedTypes).called(1);
+      verify(() => tree.supportedTypes).called(1);
 
       verifyNoMoreInteractions(tree);
     });
@@ -190,11 +206,11 @@ void main() {
     test('reset', () {
       final tree = MockAnalyticsTree();
       devForest.plant(tree);
-      when(tree.reset()).thenReturn(null);
+      when(() => tree.reset()).thenAnswer((_) => Future.value());
 
       devForest.reset();
 
-      verify(tree.reset()).called(1);
+      verify(() => tree.reset()).called(1);
 
       verifyNoMoreInteractions(tree);
     });
@@ -202,11 +218,11 @@ void main() {
     test('flush', () {
       final tree = MockAnalyticsTree();
       devForest.plant(tree);
-      when(tree.flush()).thenReturn(null);
+      when(() => tree.flush()).thenAnswer((_) => Future.value());
 
       devForest.flush();
 
-      verify(tree.flush()).called(1);
+      verify(() => tree.flush()).called(1);
 
       verifyNoMoreInteractions(tree);
     });
@@ -214,17 +230,29 @@ void main() {
     test('timingEvent', () {
       final tree = MockAnalyticsTree();
       devForest.plant(tree);
-      when(tree.timingEvent('time')).thenReturn(null);
+      when(() => tree.timingEvent('time')).thenAnswer((_) => Future.value());
 
       devForest.timingEvent('time');
 
-      verify(tree.timingEvent('time')).called(1);
+      verify(() => tree.timingEvent('time')).called(1);
 
       verifyNoMoreInteractions(tree);
     });
   });
 
   group('UserAnalyticsTree', () {
+    late Forest devForest;
+    late Forest prodForest;
+    late Forest mockForest;
+    setUp(() {
+      devForest = Forest();
+      prodForest = ProdForest();
+      mockForest = MockForest();
+    });
+
+    tearDown(() {
+      reset(mockForest);
+    });
     test('performLogEvent', () {
       final tree = MockUserAnalyticsTree();
       devForest.plant(tree);
@@ -232,11 +260,12 @@ void main() {
       final name = 'id';
       final value = 'id';
 
-      when(tree.setUserProperty(name, value)).thenReturn(null);
+      when(() => tree.setUserProperty(name, value))
+          .thenAnswer((_) => Future.value());
 
       devForest.setUserProperty(name, value);
 
-      verify(tree.setUserProperty(name, value)).called(1);
+      verify(() => tree.setUserProperty(name, value)).called(1);
     });
 
     test('setUserId', () {
@@ -245,25 +274,25 @@ void main() {
 
       final userId = 'testUser';
 
-      when(tree.setUserId(userId)).thenReturn(null);
+      when(() => tree.setUserId(userId)).thenAnswer((_) => Future.value());
 
       devForest.setUserId(userId);
 
-      verify(tree.setUserId(userId)).called(1);
+      verify(() => tree.setUserId(userId)).called(1);
 
       verifyNoMoreInteractions(tree);
     });
 
-    test('setEmail', () {
+    test('setEmail', () async {
       final tree = MockUserAnalyticsTree();
       devForest.plant(tree);
 
       final email = 'test@test.com';
-      when(tree.setEmail(email)).thenReturn(null);
+      when(() => tree.setEmail(email)).thenAnswer((_) => Future.value());
 
-      devForest.setEmail(email);
+      await devForest.setEmail(email);
 
-      verify(tree.setEmail(email)).called(1);
+      verify(() => tree.setEmail(email)).called(1);
 
       verifyNoMoreInteractions(tree);
     });
@@ -274,11 +303,11 @@ void main() {
 
       final uid = '1234567890abcdefg';
 
-      when(tree.setUid(uid)).thenReturn(null);
+      when(() => tree.setUid(uid)).thenAnswer((_) => Future.value());
 
       devForest.setUid(uid);
 
-      verify(tree.setUid(uid)).called(1);
+      verify(() => tree.setUid(uid)).called(1);
 
       verifyNoMoreInteractions(tree);
     });
@@ -289,10 +318,10 @@ void main() {
 
       final phone = '0101234567';
 
-      when(tree.setPhone(phone)).thenAnswer((_) => null);
+      when(() => tree.setPhone(phone)).thenAnswer(((_) => Future.value()));
       devForest.setPhone(phone);
 
-      verify(tree.setPhone(phone)).called(1);
+      verify(() => tree.setPhone(phone)).called(1);
 
       verifyNoMoreInteractions(tree);
     });
@@ -303,11 +332,11 @@ void main() {
 
       final userName = 'John Doe';
 
-      when(tree.setUserName(userName)).thenReturn(null);
+      when(() => tree.setUserName(userName)).thenAnswer((_) => Future.value());
 
       devForest.setUserName(userName);
 
-      verify(tree.setUserName(userName)).called(1);
+      verify(() => tree.setUserName(userName)).called(1);
 
       verifyNoMoreInteractions(tree);
     });
@@ -320,11 +349,11 @@ void main() {
         'name': ['value']
       };
 
-      when(tree.union(property)).thenReturn(null);
+      when(() => tree.union(property)).thenAnswer((_) => Future.value());
 
       devForest.union(property);
 
-      verify(tree.union(property)).called(1);
+      verify(() => tree.union(property)).called(1);
 
       verifyNoMoreInteractions(tree);
     });
@@ -335,11 +364,11 @@ void main() {
 
       final property = {'name': 1};
 
-      when(tree.increment(property)).thenReturn(null);
+      when(() => tree.increment(property)).thenAnswer((_) => Future.value());
 
       devForest.increment(property);
 
-      verify(tree.increment(property)).called(1);
+      verify(() => tree.increment(property)).called(1);
 
       verifyNoMoreInteractions(tree);
     });
@@ -350,11 +379,11 @@ void main() {
 
       final property = {'name': 1};
 
-      when(tree.setOnce(property)).thenReturn(null);
+      when(() => tree.setOnce(property)).thenAnswer((_) => Future.value());
 
       devForest.setOnce(property);
 
-      verify(tree.setOnce(property)).called(1);
+      verify(() => tree.setOnce(property)).called(1);
 
       verifyNoMoreInteractions(tree);
     });
@@ -363,11 +392,11 @@ void main() {
       final tree = MockUserAnalyticsTree();
       devForest.plant(tree);
 
-      when(tree.reset()).thenAnswer((_) => null);
+      when(() => tree.reset()).thenAnswer(((_) => Future.value()));
 
       devForest.reset();
 
-      verify(tree.reset()).called(1);
+      verify(() => tree.reset()).called(1);
 
       verifyNoMoreInteractions(tree);
     });
@@ -376,28 +405,39 @@ void main() {
       final tree = MockUserAnalyticsTree();
       devForest.plant(tree);
 
-      when(tree.flush()).thenReturn(null);
+      when(() => tree.flush()).thenAnswer((_) => Future.value());
 
       devForest.flush();
 
-      verify(tree.flush()).called(1);
+      verify(() => tree.flush()).called(1);
 
       verifyNoMoreInteractions(tree);
     });
   });
 
   group('CrashReportTree', () {
+    late Forest devForest;
+    late Forest prodForest;
+    late Forest mockForest;
+    setUp(() {
+      devForest = Forest();
+      prodForest = ProdForest();
+      mockForest = MockForest();
+    });
+    tearDown(() {
+      reset(mockForest);
+    });
     test('performReportError 는 debugMode 에서는 불리지 않아야 함', () {
       final tree = MockCrashReportTree();
       devForest.plant(tree);
 
       final error = StateError('test');
       final stack = StackTrace.empty;
-      when(tree.performReportError(error, stack)).thenReturn(null);
+      when(() => tree.performReportError(error, stack)).thenReturn(null);
 
       devForest.performReportError(error, stack);
 
-      verifyNever(tree.performReportError(error, stack));
+      verifyNever(() => tree.performReportError(error, stack));
     });
 
     test('performReportError  productionMode ', () {
@@ -406,35 +446,35 @@ void main() {
 
       final error = StateError('test');
       final stack = StackTrace.empty;
-      when(tree.performReportError(error, stack)).thenReturn(null);
+      when(() => tree.performReportError(error, stack)).thenReturn(null);
 
       prodForest.performReportError(error, stack);
 
-      verify(tree.performReportError(error, stack)).called(1);
+      verify(() => tree.performReportError(error, stack)).called(1);
     });
 
     test('performReportError - productionMode ', () {
       final tree = MockCrashReportTree();
       prodForest.plant(tree);
 
-      final details = FlutterErrorDetails();
-      when(tree.performReportFlutterError(details)).thenReturn(null);
+      final details = FlutterErrorDetails(exception: Exception());
+      when(() => tree.performReportFlutterError(details)).thenReturn(null);
 
       prodForest.performReportFlutterError(details);
 
-      verify(tree.performReportFlutterError(details)).called(1);
+      verify(() => tree.performReportFlutterError(details)).called(1);
     });
 
     test('performReportError - devMode ', () {
       final tree = MockCrashReportTree();
       devForest.plant(tree);
 
-      final details = FlutterErrorDetails();
-      when(tree.performReportFlutterError(details)).thenReturn(null);
+      final details = FlutterErrorDetails(exception: Exception());
+      when(() => tree.performReportFlutterError(details)).thenReturn(null);
 
       devForest.performReportFlutterError(details);
 
-      verifyNever(tree.performReportFlutterError(details));
+      verifyNever(() => tree.performReportFlutterError(details));
     });
   });
 
@@ -459,13 +499,17 @@ class TestTree extends Tree {
 
 class MockLogTree extends Mock with LogTree implements LogTree, Tree {}
 
-class MockAnalyticsTree extends Mock
-    with AnalyticsTree, Tree
-    implements AnalyticsTree, Tree {}
+abstract class AnalyticsTreeWithTree extends AnalyticsTree with Tree {}
 
-class MockUserAnalyticsTree extends Mock
-    with UserAnalyticsTree
-    implements UserAnalyticsTree, Tree {}
+class MockAnalyticsTree extends Mock with AnalyticsTree
+    implements
+        AnalyticsTree,
+        Tree {}
+
+class MockUserAnalyticsTree extends Mock //with UserAnalyticsTree
+    implements
+        UserAnalyticsTree,
+        Tree {}
 
 class MockCrashReportTree extends Mock implements CrashReportTree, Tree {}
 

@@ -7,5 +7,5 @@ abstract class LogTree {
   void performLog($logging.LogRecord record);
 
   /// Internal Logger Name
-  String get loggerName;
+  String? get loggerName;
 }

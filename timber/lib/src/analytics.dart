@@ -22,12 +22,12 @@ abstract class AnalyticsTree {
   bool isSupportedEventName(String name);
 
   Future<void> performLogEvent(
-      {@required String name, Map<String, dynamic> parameters});
+      {required String name, Map<String, dynamic>? parameters});
 
   Future<void> timingEvent(String name);
 
   Future<void> setCurrentScreen(
-      {@required String screenName, String screenClassOverride = 'Flutter'});
+      {required String? screenName, String screenClassOverride = 'Flutter'});
 
   Future<void> reset();
 
