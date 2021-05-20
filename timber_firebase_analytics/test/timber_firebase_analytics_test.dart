@@ -1,20 +1,19 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 import 'package:timber_firebase_analytics/timber_firebase_analytics.dart';
-import 'package:time_machine/time_machine.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   final analytics = FirebaseAnalytics();
-  FirebaseAnalytics mock;
+  FirebaseAnalytics? mock;
   const channel = MethodChannel('plugins.flutter.io/firebase_analytics');
-  MethodCall methodCall;
-  FirebaseAnalyticsTree treeWithMock;
-  FirebaseAnalyticsTree tree;
+  MethodCall? methodCall;
+  late FirebaseAnalyticsTree treeWithMock;
+  late FirebaseAnalyticsTree tree;
 
   setUp(() async {
     channel.setMockMethodCallHandler((MethodCall m) async {
@@ -22,7 +21,7 @@ void main() {
     });
     tree = FirebaseAnalyticsTree(analytics);
     mock = MockFirebaseAnalytics();
-    treeWithMock = FirebaseAnalyticsTree(mock);
+    treeWithMock = FirebaseAnalyticsTree(mock!);
   });
 
   tearDown(() {
@@ -30,11 +29,6 @@ void main() {
     methodCall = null;
   });
 
-  group('FirebaseAnalyticsTree', () {
-    test('should thorws exception', () {
-      expect(() => FirebaseAnalyticsTree(null), throwsAssertionError);
-    });
-  });
   group('setCurrentScreen', () {
     test('should throws error', () {
       expect(
@@ -43,26 +37,23 @@ void main() {
 
     test('should call FirebaseAnalytics.setCurrentScreen', () async {
       final screen = 'Main';
-      when(mock.setCurrentScreen(screenName: screen)).thenReturn(null);
+      when(() => mock!.setCurrentScreen(screenName: screen))
+          .thenAnswer((invocation) => Future.value());
       await treeWithMock.setCurrentScreen(screenName: screen);
-      verify(mock.setCurrentScreen(screenName: screen));
+      verify(() => mock!.setCurrentScreen(screenName: screen));
       verifyNoMoreInteractions(mock);
     });
   });
 
   group('isSupportedType', () {
-    test('should throw assertion error', () {
-      expect(() => tree.isSupportedType(null), throwsAssertionError);
-    });
-
     test('should true', () {
       expect(tree.isSupportedType(String), isTrue);
       expect(tree.isSupportedType(bool), isTrue);
       expect(tree.isSupportedType(int), isTrue);
       expect(tree.isSupportedType(double), isTrue);
       expect(tree.isSupportedType(DateTime), isTrue);
-      expect(tree.isSupportedType(LocalDateTime), isTrue);
-      expect(tree.isSupportedType(LocalDate), isTrue);
+      //expect(tree.isSupportedType(LocalDateTime), isTrue);
+      //expect(tree.isSupportedType(LocalDate), isTrue);
     });
   });
 
@@ -95,6 +86,7 @@ void main() {
       expect(converted[key], '2020-01-01T00:00:00');
     });
 
+    /*
     test('LocalDateTime should be converted String', () {
       final key = 'LocalDateTime';
       final value = LocalDateTime(2020, 1, 1, 0, 0, 0);
@@ -103,8 +95,9 @@ void main() {
       expect(converted.containsKey(key), isTrue);
       expect(converted[key], isA<String>());
       expect(converted[key], '2020-01-01T00:00:00');
-    });
+    });*/
 
+    /*
     test('LocalDate should be converted String', () {
       final key = 'LocalDate';
       final value = LocalDate(2020, 1, 1);
@@ -113,7 +106,7 @@ void main() {
       expect(converted.containsKey(key), isTrue);
       expect(converted[key], isA<String>());
       expect(converted[key], '2020-01-01');
-    });
+    });*/
 
     test('NotSupportedType should be converted String', () {
       final key = 'TestType';
@@ -139,7 +132,7 @@ void main() {
       final key = '한글';
       final value = 'bar';
       await treeWithMock.setUserProperty(key, value);
-      verifyNever(mock.setUserProperty(name: key, value: value));
+      verifyNever(() => mock!.setUserProperty(name: key, value: value));
       verifyZeroInteractions(mock);
       verifyNoMoreInteractions(mock);
     });
@@ -148,9 +141,10 @@ void main() {
       final key = 'foo';
       final value = 'bar';
 
-      when(mock.setUserProperty(name: key, value: value)).thenReturn(null);
+      when(() => mock!.setUserProperty(name: key, value: value))
+          .thenAnswer((_) => Future.value());
       await treeWithMock.setUserProperty(key, value);
-      verify(mock.setUserProperty(name: key, value: value)).called(1);
+      verify(() => mock!.setUserProperty(name: key, value: value)).called(1);
     });
 
     test('if value is not string, the value should be converted to string',
@@ -159,12 +153,13 @@ void main() {
       final value = 1;
       final valueString = value.toString();
 
-      when(mock.setUserProperty(name: 'key', value: value.toString()))
-          .thenAnswer((_) => Future.value(null));
+      when(() => mock!.setUserProperty(name: key, value: value.toString()))
+          .thenAnswer((_) => Future.value());
 
       await treeWithMock.setUserProperty(key, value);
 
-      verify(mock.setUserProperty(name: key, value: valueString)).called(1);
+      verify(() => mock!.setUserProperty(name: key, value: valueString))
+          .called(1);
       verifyNoMoreInteractions(mock);
     });
   });
@@ -173,27 +168,27 @@ void main() {
     test('if value is not string, the value should be converted to string',
         () async {
       final value = '1';
-      when(mock.setUserId(any)).thenReturn(null);
+      when(() => mock!.setUserId(any())).thenAnswer((_) => Future.value());
       await treeWithMock.setUid(value);
-      verify(mock.setUserId(any)).called(1);
+      verify(() => mock!.setUserId(any())).called(1);
       verifyNoMoreInteractions(mock);
     });
   });
 
   group('reset', () {
     test("should call setUserId('')", () async {
-      when(mock.setUserId('')).thenReturn(null);
+      when(() => mock!.setUserId('')).thenAnswer((_) => Future.value());
       await treeWithMock.reset();
-      verify(mock.setUserId('')).called(1);
+      verify(() => mock!.setUserId('')).called(1);
       verifyNoMoreInteractions(mock);
     });
   });
 
   group('resetAnalyticsData', () {
     test("should call resetAnalyticsData('')", () async {
-      when(mock.resetAnalyticsData()).thenReturn(null);
+      when(() => mock!.resetAnalyticsData()).thenAnswer((_) => Future.value());
       await treeWithMock.resetAnalyticsData();
-      verify(mock.resetAnalyticsData()).called(1);
+      verify(() => mock!.resetAnalyticsData()).called(1);
       verifyNoMoreInteractions(mock);
     });
   });
@@ -203,11 +198,12 @@ void main() {
       final key = 'foo';
       final value = {'foo': 'bar'};
 
-      when(mock.logEvent(name: key, parameters: value)).thenReturn(null);
+      when(() => mock!.logEvent(name: key, parameters: value))
+          .thenAnswer((_) => Future.value());
 
       await treeWithMock.performLogEvent(name: key, parameters: value);
 
-      verify(mock.logEvent(name: key, parameters: value)).called(1);
+      verify(() => mock!.logEvent(name: key, parameters: value)).called(1);
       verifyNoMoreInteractions(mock);
     });
   });

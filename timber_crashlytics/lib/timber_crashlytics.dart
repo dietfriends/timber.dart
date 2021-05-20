@@ -10,7 +10,7 @@ class CrashlyticsTree extends Tree
     with UserAnalyticsTree, LogTree, CrashReportTree {
   final FirebaseCrashlytics _crashlytics;
 
-  CrashlyticsTree([FirebaseCrashlytics firebaseCrashlytics])
+  CrashlyticsTree([FirebaseCrashlytics? firebaseCrashlytics])
       : _crashlytics = firebaseCrashlytics ?? FirebaseCrashlytics.instance;
 
   @override
@@ -44,8 +44,8 @@ class CrashlyticsTree extends Tree
         reason: flutterErrorDetails.context,
         printDetails: false,
         information: flutterErrorDetails.informationCollector == null
-            ? null
-            : flutterErrorDetails.informationCollector());
+            ? []
+            : flutterErrorDetails.informationCollector!());
   }
 
   @override
@@ -55,7 +55,6 @@ class CrashlyticsTree extends Tree
 
   @override
   Future<void> setUid(String uid) {
-    assert(uid != null);
     return _crashlytics.setUserIdentifier(uid);
   }
 
