@@ -16,8 +16,8 @@ import 'sentry_tree.dart';
 ///     and are stripped in release mode. See [Flutter build modes](https://flutter.dev/docs/testing/build-modes).
 ///     So they only get caught in debug mode.
 class SentryTimberIntegration extends Integration<SentryFlutterOptions> {
-  SentryTree _tree;
-  Function(SentryLevel level, String message) _logger;
+  late SentryTree _tree;
+  Function(SentryLevel level, String message)? _logger;
 
   final SentryLevel minEventLevel;
   final SentryLevel minBreadcrumbLevel;

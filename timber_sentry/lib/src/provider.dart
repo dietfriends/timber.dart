@@ -1,19 +1,16 @@
 import 'dart:io';
 
-import 'package:battery/battery.dart';
-import 'package:device_info/device_info.dart';
-import 'package:package_info/package_info.dart';
-import 'package:quiver/check.dart';
 import 'package:sentry/sentry.dart';
 
 abstract class Provider<T> {
   Future<T> provide();
 }
 
-abstract class UserProvider extends Provider<User> {}
+abstract class UserProvider extends Provider<SentryUser> {}
 
 abstract class ContextsProvider extends Provider<Contexts> {}
 
+/*
 class DeviceInfContextsProvider implements ContextsProvider {
   final _deviceInfo = DeviceInfoPlugin();
   final _battery = Battery();
@@ -33,13 +30,13 @@ class DeviceInfContextsProvider implements ContextsProvider {
       AndroidDeviceInfo androidDeviceInfo) async {
     checkNotNull(androidDeviceInfo);
 
-    final os = OperatingSystem(
+    final os = SentryOperatingSystem(
       //version: androidDeviceInfo.version.
       name: 'Android',
       build: androidDeviceInfo.version.release,
       version: androidDeviceInfo.version.baseOS,
     );
-    final device = Device(
+    final device = SentryDevice(
       name: androidDeviceInfo.device,
       brand: androidDeviceInfo.brand,
       batteryLevel: (await _battery.batteryLevel).toDouble(),
@@ -53,13 +50,13 @@ class DeviceInfContextsProvider implements ContextsProvider {
 
   Future<Contexts> provideFromIosDeviceInfo(IosDeviceInfo iosDeviceInfo) async {
     checkNotNull(iosDeviceInfo);
-    final os = OperatingSystem(
+    final os = SentryOperatingSystem(
       //version: androidDeviceInfo.version.
       name: iosDeviceInfo.systemName,
       build: iosDeviceInfo.utsname.version,
       version: iosDeviceInfo.systemVersion,
     );
-    final device = Device(
+    final device = SentryDevice(
       name: iosDeviceInfo.name,
       brand: 'apple',
     );
@@ -68,4 +65,4 @@ class DeviceInfContextsProvider implements ContextsProvider {
       device: device,
     );
   }
-}
+}*/

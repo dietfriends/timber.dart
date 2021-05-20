@@ -15,16 +15,12 @@ const _LOGGER_NAME = 'SentryTree';
 final _logger = $logging.Logger(_LOGGER_NAME);
 
 class SentryTree extends Tree with LogTree {
-  final UserProvider userProvider;
-  final ContextsProvider contextsProvider;
   final SentryLevel minEventLevel;
   final SentryLevel minBreadcrumbLevel;
   final Hub hub;
 
   SentryTree(this.hub,
-      {SentryFlutterOptions sentryOptions,
-      this.userProvider,
-      this.contextsProvider,
+      {SentryFlutterOptions? sentryOptions,
       this.minBreadcrumbLevel = SentryLevel.info,
       this.minEventLevel = SentryLevel.error}) {
     /*
@@ -69,8 +65,8 @@ class SentryTree extends Tree with LogTree {
       final sentryId = await hub.captureEvent(SentryEvent(
         level: record.level.toSentryLevel,
         // stackTrace: record.stackTrace,
-        exception: record.error,
-        message: Message(record.message),
+        exception: record.error as SentryException?,
+        message: SentryMessage(record.message),
         logger: record.loggerName,
       ));
     }
@@ -86,7 +82,7 @@ class SentryTree extends Tree with LogTree {
 
   @override
   void dispose() {
-    return hub?.close();
+    hub.close();
   }
 
   @override
