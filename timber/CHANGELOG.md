@@ -1,3 +1,7 @@
+## 1.0.0
+
+- feat: migrate to null safety
+
 ## 0.3.1
 
 - fix: infinite loop perform log
