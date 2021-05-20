@@ -6,8 +6,8 @@ on:
       - main
 
   pull_request:
-    paths:
-      - 'package/**'
+    branches:
+      - main
 
 jobs:
   title:
