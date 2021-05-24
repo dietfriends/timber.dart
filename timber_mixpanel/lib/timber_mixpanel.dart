@@ -6,7 +6,8 @@ import 'package:flutter_mixpanel/flutter_mixpanel.dart';
 import 'package:logging/logging.dart';
 import 'package:quiver/strings.dart';
 import 'package:timber/timber.dart';
-import 'package:time_machine/time_machine.dart' show LocalDateTime, LocalDate;
+
+//import 'package:time_machine/time_machine.dart' show LocalDateTime, LocalDate;
 import 'package:pedantic/pedantic.dart';
 
 final _logger = Logger('MixpanelTree');
@@ -19,8 +20,8 @@ class MixpanelTree extends Tree with AnalyticsTree, UserAnalyticsTree {
     Uri,
     DateTime,
     List,
-    LocalDate,
-    LocalDateTime,
+    //LocalDate,
+    //LocalDateTime,
     bool,
     int,
     double,
@@ -35,7 +36,7 @@ class MixpanelTree extends Tree with AnalyticsTree, UserAnalyticsTree {
 
   @override
   Future<void> performLogEvent(
-      {String name, Map<String, dynamic> parameters}) async {
+      {required String name, Map<String, dynamic>? parameters}) async {
     assert(isNotBlank(name));
     try {
       unawaited(
@@ -73,7 +74,7 @@ class MixpanelTree extends Tree with AnalyticsTree, UserAnalyticsTree {
     return FlutterMixpanel.people.union(properties);
   }
 
-  Map<String, dynamic> convertMixpanelProperty(Map<String, dynamic> input) {
+  Map<String, dynamic> convertMixpanelProperty(Map<String, dynamic>? input) {
     if (input == null) {
       return <String, dynamic>{};
     }
@@ -82,14 +83,14 @@ class MixpanelTree extends Tree with AnalyticsTree, UserAnalyticsTree {
     input.forEach((key, value) {
       if (isSupportedType(value.runtimeType)) {
         if (value is DateTime) {
-          // mixpanel[key] = value.toUtc();
+          //mixpanel[key] = value.toUtc();
         }
-        if (value is LocalDateTime) {
-          mixpanel[key] = value.toDateTimeLocal().toUtc();
-        }
-        if (value is LocalDate) {
-          mixpanel[key] = value.toDateTimeUnspecified().toUtc();
-        }
+        //if (value is LocalDateTime) {
+        //  mixpanel[key] = value.toDateTimeLocal().toUtc();
+        //}
+        //if (value is LocalDate) {
+        //  mixpanel[key] = value.toDateTimeUnspecified().toUtc();
+        //}
       } else {
         _logger.fine(() => 'unsupported type: $key - ${value.runtimeType}');
         mixpanel[key] = value.toString();
@@ -104,12 +105,12 @@ class MixpanelTree extends Tree with AnalyticsTree, UserAnalyticsTree {
   }
 
   @override
-  Future<void> increment(Map<String, num> properties) {
+  Future<void> increment(Map<String, num> properties) async {
     try {
       return FlutterMixpanel.people.increment(properties);
     } catch (e, s) {
       _logger.severe('increment error : $e', e, s);
-      return null;
+      return;
     }
   }
 
@@ -135,5 +136,5 @@ class MixpanelTree extends Tree with AnalyticsTree, UserAnalyticsTree {
 
   @override
   Future<void> setCurrentScreen(
-      {String screenName, String screenClassOverride = 'Flutter'}) {}
+      {String? screenName, String screenClassOverride = 'Flutter'}) async {}
 }
