@@ -65,7 +65,7 @@ class SentryTree extends Tree with LogTree {
       final sentryId = await hub.captureEvent(SentryEvent(
         level: record.level.toSentryLevel,
         // stackTrace: record.stackTrace,
-        exception: record.error as SentryException?,
+        // exception: record.error as SentryException?,
         message: SentryMessage(record.message),
         logger: record.loggerName,
       ));
