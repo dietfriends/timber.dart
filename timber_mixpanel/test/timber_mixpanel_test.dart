@@ -6,17 +6,15 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/services.dart';
-import 'package:flutter_mixpanel/flutter_mixpanel.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:timber_mixpanel/timber_mixpanel.dart';
-import 'package:time_machine/time_machine.dart';
+//import 'package:time_machine/time_machine.dart';
 
 void main() {
-  MixpanelTree tree;
+  late MixpanelTree tree;
   var channel;
-  setUpAll(() async {
-    await TestWidgetsFlutterBinding.ensureInitialized();
+  setUpAll(() {
+    TestWidgetsFlutterBinding.ensureInitialized();
   });
 
   setUp(() {
@@ -64,20 +62,20 @@ void main() {
   test('convertMixpanelProperty', () {
     var converted = tree.convertMixpanelProperty({
       'dateTime': DateTime.now(),
-      'localDateTime': LocalDateTime.now(),
-      'localDate': LocalDate.today(),
+      //'localDateTime': LocalDateTime.now(),
+      //'localDate': LocalDate.today(),
       'unsupportedType': TestType()
     });
 
-    expect(converted['localDateTime'], isA<DateTime>());
-    expect(converted['localDate'], isA<DateTime>());
+    //expect(converted['localDateTime'], isA<DateTime>());
+    //expect(converted['localDate'], isA<DateTime>());
     expect(converted['unsupportedType'], 'Yay');
   });
 
   test('isSupportedType', () {
     expect(tree.isSupportedType(DateTime), isTrue);
-    expect(tree.isSupportedType(LocalDateTime), isTrue);
-    expect(tree.isSupportedType(LocalDate), isTrue);
+    //expect(tree.isSupportedType(LocalDateTime), isTrue);
+    //expect(tree.isSupportedType(LocalDate), isTrue);
     expect(tree.isSupportedType(String), isTrue);
     expect(tree.isSupportedType(bool), isTrue);
     expect(tree.isSupportedType(int), isTrue);

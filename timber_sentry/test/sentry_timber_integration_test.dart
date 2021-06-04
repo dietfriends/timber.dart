@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:sentry/sentry.dart';
 import 'package:sentry/src/hub_adapter.dart';
 import 'package:timber/timber.dart';

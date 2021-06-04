@@ -1,3 +1,7 @@
+## 1.0.0
+
+-feat: migrate to null safety
+
 ## [0.1.0]
 
 - chore: firebase_crashlytics: ^0.4.0

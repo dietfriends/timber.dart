@@ -3,7 +3,6 @@ library timber_firebase_analytics;
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:quiver/strings.dart' show isNotBlank;
 import 'package:timber/timber.dart';
-import 'package:time_machine/time_machine.dart' show LocalDate, LocalDateTime;
 
 /// A Calculator.
 class FirebaseAnalyticsTree extends Tree with AnalyticsTree, UserAnalyticsTree {
@@ -17,15 +16,16 @@ class FirebaseAnalyticsTree extends Tree with AnalyticsTree, UserAnalyticsTree {
     num,
     bool,
     DateTime,
-    LocalDateTime,
-    LocalDate,
+    // wait for null safety
+    //LocalDateTime,
+    //LocalDate,
     int,
     double
   };
 
   @override
   Future<void> setCurrentScreen(
-      {String screenName, String screenClassOverride = 'Flutter'}) {
+      {String? screenName, String screenClassOverride = 'Flutter'}) {
     if (screenName == null) {
       throw ArgumentError.notNull('screenName');
     }
@@ -34,11 +34,11 @@ class FirebaseAnalyticsTree extends Tree with AnalyticsTree, UserAnalyticsTree {
   }
 
   @override
-  bool isSupportedEventName(String name) {
-    return isNotBlank(name) && name.replaceAll(' ', '_').isAlphaNumeric;
+  bool isSupportedEventName(String? name) {
+    return isNotBlank(name) && name!.replaceAll(' ', '_').isAlphaNumeric;
   }
 
-  Map<String, dynamic> convertFirebaseProperty(Map<String, dynamic> input) {
+  Map<String, dynamic> convertFirebaseProperty(Map<String, dynamic>? input) {
     if (input == null) {
       return {};
     }
@@ -54,6 +54,7 @@ class FirebaseAnalyticsTree extends Tree with AnalyticsTree, UserAnalyticsTree {
                 .toIso8601String()
                 .replaceAll(RegExp(r'\.\d+Z*'), '');
           }
+          /*
           if (value is LocalDateTime) {
             properties[key] = value
                 .toDateTimeLocal()
@@ -63,6 +64,7 @@ class FirebaseAnalyticsTree extends Tree with AnalyticsTree, UserAnalyticsTree {
           if (value is LocalDate) {
             properties[key] = value.toString('yyyy-MM-dd');
           }
+          */
         } else {
           properties[key] = value.toString();
         }
@@ -74,7 +76,7 @@ class FirebaseAnalyticsTree extends Tree with AnalyticsTree, UserAnalyticsTree {
   }
 
   @override
-  Future<void> setUserProperty(String name, dynamic value) {
+  Future<void> setUserProperty(String name, dynamic value) async {
     if (name.isAlphaNumeric) {
       // firebase 는 string 만 가능
       if (value is String) {
@@ -84,7 +86,6 @@ class FirebaseAnalyticsTree extends Tree with AnalyticsTree, UserAnalyticsTree {
             name: name, value: value.toString());
       }
     }
-    return null;
   }
 
   @override
@@ -105,7 +106,8 @@ class FirebaseAnalyticsTree extends Tree with AnalyticsTree, UserAnalyticsTree {
   }
 
   @override
-  Future<void> performLogEvent({String name, Map<String, dynamic> parameters}) {
+  Future<void> performLogEvent(
+      {required String name, Map<String, dynamic>? parameters}) {
     var eventName = name.replaceAll(' ', '_');
     var eventParams = convertFirebaseProperty(parameters);
     return _firebaseAnalytics.logEvent(
@@ -113,19 +115,19 @@ class FirebaseAnalyticsTree extends Tree with AnalyticsTree, UserAnalyticsTree {
   }
 
   @override
-  Future<void> flush() {}
+  Future<void> flush() async {}
 
   @override
-  Future<void> increment(Map<String, num> properties) {}
+  Future<void> increment(Map<String, num> properties) async {}
 
   @override
-  Future<void> setOnce(Map<String, dynamic> properties) {}
+  Future<void> setOnce(Map<String, dynamic> properties) async {}
 
   @override
-  Future<void> timingEvent(String name) {}
+  Future<void> timingEvent(String name) async {}
 
   @override
-  Future<void> union(Map<String, List> properties) {}
+  Future<void> union(Map<String, List> properties) async {}
 
   @override
   void dispose() {}

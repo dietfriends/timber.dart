@@ -7,14 +7,14 @@ class Forest extends Tree
     with LogTree, CrashReportTree, AnalyticsTree, UserAnalyticsTree {
   final _lock = Lock();
   final _memo = AsyncMemoizer();
-  final FlutterExceptionHandler _exceptionHandler;
+  final FlutterExceptionHandler? _exceptionHandler;
 
   @visibleForTesting
   Forest([this._exceptionHandler]);
 
   Forest._([this._exceptionHandler]);
 
-  StreamSubscription<LogRecord> _subscription;
+  StreamSubscription<LogRecord>? _subscription;
 
   Future<void> init() {
     return _memo.runOnce(() {
@@ -173,13 +173,13 @@ class Forest extends Tree
   }
 
   @override
-  bool isSupportedType(value) {
+  bool isSupportedType(Type value) {
     return _analyticsTrees.any((element) => element.isSupportedType(value));
   }
 
   @override
   Future<void> performLogEvent(
-      {@required String name, Map<String, dynamic> parameters}) {
+      {required String name, Map<String, dynamic>? parameters}) async {
     _analyticsTrees.where((tree) => isSupportedEventName(name)).forEach((tree) {
       tree.performLogEvent(name: name, parameters: parameters);
     });
@@ -274,7 +274,7 @@ class Forest extends Tree
 
   @override
   Future<void> setCurrentScreen(
-      {String screenName, String screenClassOverride = 'Flutter'}) async {
+      {String? screenName, String screenClassOverride = 'Flutter'}) async {
     _analyticsTrees.forEach((tree) {
       tree.setCurrentScreen(
           screenName: screenName, screenClassOverride: screenClassOverride);

@@ -1,3 +1,7 @@
+## 1.0.0
+
+- feat: null safety
+
 ## [0.1.0]
 
 - feat: flutter integration

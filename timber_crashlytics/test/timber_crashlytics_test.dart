@@ -13,7 +13,7 @@ void main() {
   setupFirebaseCrashlyticsMocks();
   FirebaseCrashlytics crashlytics;
 
-  CrashlyticsTree tree;
+  late CrashlyticsTree tree;
   setUpAll(() async {
     await Firebase.initializeApp();
     crashlytics = FirebaseCrashlytics.instance;
@@ -51,8 +51,7 @@ void main() {
           'exception': exception,
           'reason': msg,
           'information': '',
-          'stackTraceElements':
-              getStackTraceElements(Trace.format(stack).trimRight().split('\n'))
+          'stackTraceElements': stack
         })
       ]);
     });
@@ -82,8 +81,7 @@ void main() {
         'exception': exception,
         'reason': exceptionReason,
         'information': '$exceptionFirstMessage\n$exceptionSecondMessage',
-        'stackTraceElements':
-            getStackTraceElements(Trace.format(stack).trimRight().split('\n'))
+        'stackTraceElements': stack
       })
     ]);
   });
@@ -98,8 +96,7 @@ void main() {
         'exception': exception,
         'reason': null,
         'information': '',
-        'stackTraceElements':
-            getStackTraceElements(Trace.format(stack).trimRight().split('\n'))
+        'stackTraceElements': stack
       })
     ]);
   });
@@ -116,9 +113,6 @@ void main() {
   });
 
   group('setUid', () {
-    test('should throw if null', () {
-      expect(() => tree.setUid(null), throwsAssertionError);
-    });
     test('should call crashlytics setUserIdentifier', () async {
       final id = 'foo';
       await tree.setUid(id);
