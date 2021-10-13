@@ -86,7 +86,7 @@ void main() {
             logger: 'logger',
           ))).thenAnswer((_) => Future.value(SentryId.empty()));
       tree.performLog(record2);
-      verify(() => hub.captureEvent(any()!)).called(1);
+      verify(() => hub.captureEvent(any(named: 'addBreadcrumb')!)).called(1);
     });
   });
 
