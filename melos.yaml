@@ -1,0 +1,4 @@
+name: timber_mono
+
+packages:
+  - packages/**

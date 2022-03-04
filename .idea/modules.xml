@@ -2,13 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/timber/timber.iml" filepath="$PROJECT_DIR$/timber/timber.iml" />
-      <module fileurl="file://$PROJECT_DIR$/timber.dart.iml" filepath="$PROJECT_DIR$/timber.dart.iml" />
-      <module fileurl="file://$PROJECT_DIR$/timber_crashlytics/timber_crashlytics.iml" filepath="$PROJECT_DIR$/timber_crashlytics/timber_crashlytics.iml" />
-      <module fileurl="file://$PROJECT_DIR$/timber_example/timber_example.iml" filepath="$PROJECT_DIR$/timber_example/timber_example.iml" />
-      <module fileurl="file://$PROJECT_DIR$/timber_firebase_analytics/timber_firebase_analytics.iml" filepath="$PROJECT_DIR$/timber_firebase_analytics/timber_firebase_analytics.iml" />
-      <module fileurl="file://$PROJECT_DIR$/timber_mixpanel/timber_mixpanel.iml" filepath="$PROJECT_DIR$/timber_mixpanel/timber_mixpanel.iml" />
-      <module fileurl="file://$PROJECT_DIR$/timber_sentry/timber_sentry.iml" filepath="$PROJECT_DIR$/timber_sentry/timber_sentry.iml" />
+      <module fileurl="file://$PROJECT_DIR$/packages/timber/melos_timber.iml" filepath="$PROJECT_DIR$/packages/timber/melos_timber.iml" />
+      <module fileurl="file://$PROJECT_DIR$/packages/timber_crashlytics/melos_timber_crashlytics.iml" filepath="$PROJECT_DIR$/packages/timber_crashlytics/melos_timber_crashlytics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/packages/timber_firebase_analytics/melos_timber_firebase_analytics.iml" filepath="$PROJECT_DIR$/packages/timber_firebase_analytics/melos_timber_firebase_analytics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/packages/timber_mixpanel/melos_timber_mixpanel.iml" filepath="$PROJECT_DIR$/packages/timber_mixpanel/melos_timber_mixpanel.iml" />
+      <module fileurl="file://$PROJECT_DIR$/packages/timber_sentry/melos_timber_sentry.iml" filepath="$PROJECT_DIR$/packages/timber_sentry/melos_timber_sentry.iml" />
+      <module fileurl="file://$PROJECT_DIR$/melos_timber_mono.iml" filepath="$PROJECT_DIR$/melos_timber_mono.iml" />
     </modules>
   </component>
 </project>
