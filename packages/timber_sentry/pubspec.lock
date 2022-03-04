@@ -191,6 +191,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3"
+  lints:
+    dependency: "direct dev"
+    description:
+      name: lints
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   logging:
     dependency: "direct main"
     description:
@@ -297,7 +304,7 @@ packages:
     source: hosted
     version: "1.8.0"
   pedantic:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: pedantic
       url: "https://pub.dartlang.org"
@@ -337,14 +344,14 @@ packages:
       name: sentry
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.0"
+    version: "6.3.0"
   sentry_flutter:
     dependency: "direct main"
     description:
       name: sentry_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.0"
+    version: "6.3.0"
   shelf:
     dependency: transitive
     description:
@@ -458,9 +465,9 @@ packages:
   timber:
     dependency: "direct main"
     description:
-      path: "../timber"
-      relative: true
-    source: path
+      name: timber
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "1.0.0+1"
   typed_data:
     dependency: transitive
