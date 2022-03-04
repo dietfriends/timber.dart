@@ -1,18 +1,18 @@
 library timber_mixpanel;
 
-import 'dart:io';
+import 'dart:async';
 
-import 'package:flutter_mixpanel/flutter_mixpanel.dart';
 import 'package:logging/logging.dart';
+import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 import 'package:quiver/strings.dart';
 import 'package:timber/timber.dart';
 
 //import 'package:time_machine/time_machine.dart' show LocalDateTime, LocalDate;
-import 'package:pedantic/pedantic.dart';
 
 final _logger = Logger('MixpanelTree');
 
 class MixpanelTree extends Tree with AnalyticsTree, UserAnalyticsTree {
+  final Mixpanel _mixpanel;
   @override
   final Set<Type> supportedTypes = {
     String,
@@ -34,13 +34,14 @@ class MixpanelTree extends Tree with AnalyticsTree, UserAnalyticsTree {
   @override
   String nameProperty = '\$name';
 
+  MixpanelTree(this._mixpanel);
+
   @override
   Future<void> performLogEvent(
       {required String name, Map<String, dynamic>? parameters}) async {
     assert(isNotBlank(name));
     try {
-      unawaited(
-          FlutterMixpanel.track(name, convertMixpanelProperty(parameters)));
+      _mixpanel.track(name, properties: parameters);
       _logger.info(name);
     } catch (e, s) {
       _logger.severe('logEvent error : $e', e, s);
@@ -48,55 +49,32 @@ class MixpanelTree extends Tree with AnalyticsTree, UserAnalyticsTree {
   }
 
   @override
-  Future<void> setUserProperty(String name, value) {
-    return FlutterMixpanel.people.setProperty(name, value);
+  Future<void> setUserProperty(String name, value) async {
+    return _mixpanel.getPeople().set(name, value);
   }
 
   @override
   Future<void> setUserId(String id) async {
-    unawaited(FlutterMixpanel.identify(id));
-    if (Platform.isAndroid) {
-      unawaited(FlutterMixpanel.people.identify(id));
-    }
+    _mixpanel.identify(id);
   }
 
   @override
   Future<void> timingEvent(String name) async {
     try {
-      await FlutterMixpanel.time(name);
+      _mixpanel.timeEvent(name);
     } catch (e, s) {
       _logger.severe('timingEvent error : $e', e, s);
     }
   }
 
   @override
-  Future<void> union(Map<String, List> properties) {
-    return FlutterMixpanel.people.union(properties);
-  }
-
-  Map<String, dynamic> convertMixpanelProperty(Map<String, dynamic>? input) {
-    if (input == null) {
-      return <String, dynamic>{};
-    }
-    var mixpanel = Map<String, dynamic>.of(input);
-
-    input.forEach((key, value) {
-      if (isSupportedType(value.runtimeType)) {
-        if (value is DateTime) {
-          //mixpanel[key] = value.toUtc();
-        }
-        //if (value is LocalDateTime) {
-        //  mixpanel[key] = value.toDateTimeLocal().toUtc();
-        //}
-        //if (value is LocalDate) {
-        //  mixpanel[key] = value.toDateTimeUnspecified().toUtc();
-        //}
-      } else {
-        _logger.fine(() => 'unsupported type: $key - ${value.runtimeType}');
-        mixpanel[key] = value.toString();
+  Future<void> union(Map<String, List> properties) async {
+    for (var key in properties.keys) {
+      final value = properties[key];
+      if (value != null) {
+        _mixpanel.getPeople().union(key, value);
       }
-    });
-    return mixpanel;
+    }
   }
 
   @override
@@ -107,7 +85,12 @@ class MixpanelTree extends Tree with AnalyticsTree, UserAnalyticsTree {
   @override
   Future<void> increment(Map<String, num> properties) async {
     try {
-      return FlutterMixpanel.people.increment(properties);
+      for (var key in properties.keys) {
+        final value = properties[key];
+        if (value != null) {
+          _mixpanel.getPeople().increment(key, value.toDouble());
+        }
+      }
     } catch (e, s) {
       _logger.severe('increment error : $e', e, s);
       return;
@@ -115,23 +98,28 @@ class MixpanelTree extends Tree with AnalyticsTree, UserAnalyticsTree {
   }
 
   @override
-  Future<void> setOnce(Map<String, dynamic> properties) {
-    return FlutterMixpanel.people.setOnce(convertMixpanelProperty(properties));
+  Future<void> setOnce(Map<String, dynamic> properties) async {
+    for (var key in properties.keys) {
+      final value = properties[key];
+      if (value != null) {
+        _mixpanel.getPeople().setOnce(key, value);
+      }
+    }
   }
 
   @override
-  Future<void> flush() {
-    return FlutterMixpanel.flush();
+  Future<void> flush() async {
+    return _mixpanel.flush();
   }
 
   @override
-  Future<void> reset() {
-    return FlutterMixpanel.reset();
+  Future<void> reset() async {
+    return _mixpanel.reset();
   }
 
   @override
   void dispose() async {
-    return FlutterMixpanel.flush();
+    return _mixpanel.flush();
   }
 
   @override

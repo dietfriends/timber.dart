@@ -7,11 +7,15 @@
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mixpanel_flutter/mixpanel_flutter.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:timber_mixpanel/timber_mixpanel.dart';
-//import 'package:time_machine/time_machine.dart';
+
+class MockMixpanel extends Mock implements Mixpanel {}
 
 void main() {
   late MixpanelTree tree;
+  late Mixpanel mixpanel;
   var channel;
   setUpAll(() {
     TestWidgetsFlutterBinding.ensureInitialized();
@@ -20,13 +24,14 @@ void main() {
   setUp(() {
     final log = <MethodCall>[];
 
+    mixpanel = MockMixpanel();
     channel = const MethodChannel('net.amond.flutter_mixpanel');
 
 // Register the mock handler.
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
       log.add(methodCall);
     });
-    tree = MixpanelTree();
+    tree = MixpanelTree(mixpanel);
   });
 
   test('performLogEvent', () {
@@ -57,19 +62,6 @@ void main() {
     tree.union({
       'union': ['test']
     });
-  });
-
-  test('convertMixpanelProperty', () {
-    var converted = tree.convertMixpanelProperty({
-      'dateTime': DateTime.now(),
-      //'localDateTime': LocalDateTime.now(),
-      //'localDate': LocalDate.today(),
-      'unsupportedType': TestType()
-    });
-
-    //expect(converted['localDateTime'], isA<DateTime>());
-    //expect(converted['localDate'], isA<DateTime>());
-    expect(converted['unsupportedType'], 'Yay');
   });
 
   test('isSupportedType', () {
