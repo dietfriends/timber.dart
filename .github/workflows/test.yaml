@@ -17,7 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         package: [ "timber", "timber_crashlytics", "timber_firebase_analytics", "timber_mixpanel", "timber_sentry" ]
-        version: [ "2.0.0","2.2.0" ]
+        version: [ "2.8.0","2.10.0" ]
 
     steps:
       - uses: actions/checkout@v2
@@ -37,7 +37,7 @@ jobs:
       #    main_dir: ${{ matrix.package }}
       #    package: ${{ matrix.package }}
       - name: Install dependencies
-        working-directory: ${{ matrix.package }}
+        working-directory: packages/${{ matrix.package }}
         run: |
           flutter pub get
           flutter pub global activate remove_from_coverage
@@ -55,7 +55,7 @@ jobs:
       #    github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload coverage to codecov
         uses: codecov/codecov-action@v1
-        if: ${{ matrix.version == '1.22.3' }}
+        if: ${{ matrix.version == '2.8.0' }}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: ${{ matrix.package }}
