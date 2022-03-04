@@ -1,6 +1,6 @@
 name: timber_sentry
 description: Timber Tree implementation for Sentry.
-version: 1.0.0
+version: 2.0.0
 homepage: https://github.com/dietfriends/timber.dart/tree/main/timber_sentry
 repository: https://github.com/dietfriends/timber.dart/
 
@@ -14,9 +14,8 @@ dependencies:
   timber: ^1.0.0
   #time_machine: '>=0.9.0 <1.0.0'
   quiver: ^3.0.1
-  pedantic: ^1.11.0
-  sentry_flutter: ^5.0.0
-  sentry: ^5.0.0
+  sentry_flutter: ^6.3.0
+  sentry: ^6.3.0
   package_info: ^2.0.0
   device_info: ^2.0.1
   #battery: ^2.0.2
@@ -27,5 +26,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mocktail: ^0.1.2
+  lints: ^1.0.1
   #flutter_driver:
   #  sdk: flutter

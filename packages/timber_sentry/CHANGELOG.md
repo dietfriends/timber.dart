@@ -1,3 +1,7 @@
+## 2.0.0
+
+- sentry 6.3.0
+- 
 ## 1.0.0
 
 - feat: null safety
