@@ -111,15 +111,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_mixpanel:
-    dependency: "direct main"
-    description:
-      name: flutter_mixpanel
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.0-1.0.nullsafety.1"
   flutter_test:
     dependency: "direct dev"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
+  flutter_web_plugins:
+    dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.0"
@@ -165,13 +163,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3"
-  json_annotation:
-    dependency: transitive
-    description:
-      name: json_annotation
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.0.1"
   logging:
     dependency: "direct main"
     description:
@@ -200,6 +191,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  mixpanel_flutter:
+    dependency: "direct main"
+    description:
+      name: mixpanel_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.4.5"
   mocktail:
     dependency: "direct dev"
     description:
@@ -229,7 +227,7 @@ packages:
     source: hosted
     version: "1.8.0"
   pedantic:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: pedantic
       url: "https://pub.dartlang.org"
@@ -369,9 +367,9 @@ packages:
   timber:
     dependency: "direct main"
     description:
-      path: "../timber"
-      relative: true
-    source: path
+      name: timber
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "1.0.0+1"
   typed_data:
     dependency: transitive
