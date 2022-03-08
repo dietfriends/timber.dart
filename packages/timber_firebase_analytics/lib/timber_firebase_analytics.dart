@@ -8,8 +8,8 @@ import 'package:timber/timber.dart';
 class FirebaseAnalyticsTree extends Tree with AnalyticsTree, UserAnalyticsTree {
   final FirebaseAnalytics _firebaseAnalytics;
 
-  FirebaseAnalyticsTree(this._firebaseAnalytics)
-      : assert(_firebaseAnalytics != null);
+  FirebaseAnalyticsTree(this._firebaseAnalytics);
+
   @override
   Set<Type> supportedTypes = {
     String,
@@ -90,14 +90,15 @@ class FirebaseAnalyticsTree extends Tree with AnalyticsTree, UserAnalyticsTree {
 
   @override
   Future<void> setUid(String uid) {
-    return _firebaseAnalytics.setUserId(uid);
+    return _firebaseAnalytics.setUserId(
+        id: uid, callOptions: AnalyticsCallOptions(global: true));
   }
 
   @override
   Future<void> reset() async {
     // TODO(amond): reset 이 필요한가?
     //return _firebaseAnalytics.resetAnalyticsData();
-    return _firebaseAnalytics.setUserId('');
+    return _firebaseAnalytics.setUserId(callOptions:AnalyticsCallOptions(global: true) );
   }
 
   /// Clears all analytics data for this app from the device and resets the app instance id.

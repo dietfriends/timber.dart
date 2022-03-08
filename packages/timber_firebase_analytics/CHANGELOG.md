@@ -1,6 +1,7 @@
 ## 1.0.0
 
 - feat: migrate to null safety
+- firebase_analytics: ^9.0.0
 
 ## [0.1.0]
 

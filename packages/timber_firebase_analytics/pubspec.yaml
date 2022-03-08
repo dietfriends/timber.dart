@@ -1,6 +1,6 @@
 name: timber_firebase_analytics
 description: Timber Tree implementation for Firebase Analytics.
-version: 0.1.0
+version: 1.0.0
 homepage: https://github.com/dietfriends/timber.dart/tree/main/timber_firebase_analytics
 repository: https://github.com/dietfriends/timber.dart/
 
@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   timber: ^1.0.0
-  firebase_analytics: ^8.1.0
+  firebase_analytics: ^9.0.0
   #time_machine: '>=0.9.0 <1.0.0'
   quiver: ^3.0.1
   pedantic: ^1.11.0

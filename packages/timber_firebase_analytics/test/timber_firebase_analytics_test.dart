@@ -2,13 +2,12 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-
 import 'package:timber_firebase_analytics/timber_firebase_analytics.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  final analytics = FirebaseAnalytics();
+  final analytics = FirebaseAnalytics.instance;
   FirebaseAnalytics? mock;
   const channel = MethodChannel('plugins.flutter.io/firebase_analytics');
   MethodCall? methodCall;
@@ -168,18 +167,18 @@ void main() {
     test('if value is not string, the value should be converted to string',
         () async {
       final value = '1';
-      when(() => mock!.setUserId(any())).thenAnswer((_) => Future.value());
+      when(() => mock!.setUserId(id: any(), callOptions: any())).thenAnswer((_) => Future.value());
       await treeWithMock.setUid(value);
-      verify(() => mock!.setUserId(any())).called(1);
+      verify(() => mock!.setUserId(id: any(), callOptions: any())).called(1);
       verifyNoMoreInteractions(mock);
     });
   });
 
   group('reset', () {
     test("should call setUserId('')", () async {
-      when(() => mock!.setUserId('')).thenAnswer((_) => Future.value());
+      when(() => mock!.setUserId(callOptions: AnalyticsCallOptions(global: true))).thenAnswer((_) => Future.value());
       await treeWithMock.reset();
-      verify(() => mock!.setUserId('')).called(1);
+      verify(() => mock!.setUserId(callOptions: AnalyticsCallOptions(global: true))).called(1);
       verifyNoMoreInteractions(mock);
     });
   });
