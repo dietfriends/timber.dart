@@ -39,13 +39,15 @@ class CrashlyticsTree extends Tree
 
   @override
   void performReportFlutterError(FlutterErrorDetails flutterErrorDetails) {
+    final information = flutterErrorDetails.informationCollector?.call() ?? [];
+
     _crashlytics.recordError(
-        flutterErrorDetails.exceptionAsString(), flutterErrorDetails.stack,
-        reason: flutterErrorDetails.context,
-        printDetails: false,
-        information: flutterErrorDetails.informationCollector == null
-            ? []
-            : flutterErrorDetails.informationCollector!());
+      flutterErrorDetails.exceptionAsString(),
+      flutterErrorDetails.stack,
+      reason: flutterErrorDetails.context,
+      printDetails: false,
+      information: information,
+    );
   }
 
   @override
