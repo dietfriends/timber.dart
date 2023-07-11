@@ -59,7 +59,7 @@ void main() {
     test('performLog severe', () {
       final record = LogRecord(Level.INFO, 'test', 'logger');
 
-      when(() => hub.addBreadcrumb(any())).thenReturn(null);
+      when(() => hub.addBreadcrumb(any())).thenAnswer((_) async {});
       tree.performLog(record);
       verify(() => hub.addBreadcrumb(any()!)).called(1);
 
