@@ -1,16 +1,16 @@
 name: timber_mixpanel
 description: Timber Tree implementation for Mixpanel.
-version: 2.0.0
+version: 3.0.0+1
 homepage: https://github.com/dietfriends/timber.dart/tree/main/timber_mixpanel
 repository: https://github.com/dietfriends/timber.dart/
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.12.0 <4.0.0"
   flutter: ">=2.0.0"
 dependencies:
   flutter:
     sdk: flutter
-  mixpanel_flutter: ^1.4.5
+  mixpanel_flutter: ^2.0.0
   quiver: ^3.0.1
   logging: ^1.0.1
   timber: ^1.0.0
